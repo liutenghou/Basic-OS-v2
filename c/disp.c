@@ -16,6 +16,7 @@ void dispatch(void) {
 	funcptr fp;
 	int stack;
 	va_list ap;
+	char *s;
 
 	for (p = next(); p;) {
 		//      kprintf("Process %x selected stck %x\n", p, p->esp);
@@ -42,11 +43,12 @@ void dispatch(void) {
 			p = next();
 			break;
 		case(SYS_PUTS):
-
+			ap = (va_list)p->args;
+			kprintf("%s", va_arg(ap, char *));
 			p = next();
 			break;
 		case(SYS_KILL):
-
+			p->state = STATE_DEAD;
 			p = next();
 			break;
 		default:

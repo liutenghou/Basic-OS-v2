@@ -10,6 +10,7 @@
     int         i;
 
     for( i = 0; i < 5; i++ ) {
+//    	sysputs("produce?");
         kprintf( "Produce %d\n", i );
         sysyield();
     }
@@ -33,10 +34,10 @@
  void     root( void ) {
 /****************************/
    int proc_pid, con_pid;
-   int gotPID = sysgetpid();
-   kprintf("Proc pid = %d Con pid = %d\n gotpid:%d\n", proc_pid, con_pid, gotPID);
-
-   kprintf("Root has been called\n");
+//   int gotPID = sysgetpid();
+//   kprintf("Proc pid = %d Con pid = %d\n gotpid:%d\n", proc_pid, con_pid, gotPID);
+//
+//   kprintf("Root has been called\n");
    
    sysyield();
    sysyield();

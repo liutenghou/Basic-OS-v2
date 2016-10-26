@@ -58,7 +58,7 @@ input: null terminated string, to be displayed by kernel
 kernel uses kprintf to display string
 */
 extern void sysputs(char *str){
-	syscall(SYS_PUTS);
+	syscall(SYS_PUTS, str);
 }
 
 //takes PID as int, kills process

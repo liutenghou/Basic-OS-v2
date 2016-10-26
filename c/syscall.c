@@ -65,3 +65,12 @@ extern void sysputs(char *str){
 extern int syskill(int pid){
 	return syscall(SYS_KILL);
 }
+
+//3.3 IPC system calls
+
+extern int syssend(int dest_pid, unsigned long num){
+	return -1;
+}
+extern int sysrecv(unsigned int *from_pid, unsigned long *num){
+	return -1;
+}

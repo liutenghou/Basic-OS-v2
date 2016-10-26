@@ -37,6 +37,7 @@ int create( funcptr fp, size_t stackSize ) {
       return CREATE_FAILURE;
 
     // If the stack is too small make it larger
+    // could just have it a set size?
     if( stackSize < PROC_STACK ) {
         stackSize = PROC_STACK;
     }
@@ -58,6 +59,7 @@ int create( funcptr fp, size_t stackSize ) {
         return CREATE_FAILURE;
     }
 
+    //TODO: add context frame for sysstop process below this
 
     cf = kmalloc( stackSize );
     if( !cf ) {

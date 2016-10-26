@@ -5,84 +5,97 @@
 #include <xeroslib.h>
 #include <stdarg.h>
 
+static pcb *head = NULL;
+static pcb *tail = NULL;
 
-static pcb      *head = NULL;
-static pcb      *tail = NULL;
+void dispatch(void) {
+	/********************************/
 
-void     dispatch( void ) {
-/********************************/
+	pcb *p;
+	int r;
+	funcptr fp;
+	int stack;
+	va_list ap;
 
-    pcb         *p;
-    int         r;
-    funcptr     fp;
-    int         stack;
-    va_list     ap;
+	for (p = next(); p;) {
+		//      kprintf("Process %x selected stck %x\n", p, p->esp);
 
-    for( p = next(); p; ) {
-      //      kprintf("Process %x selected stck %x\n", p, p->esp);
+		r = contextswitch(p);
+		switch (r) {
+		case ( SYS_CREATE):
+			ap = (va_list) p->args;
+			fp = (funcptr)(va_arg( ap, int ) );
+			stack = va_arg( ap, int );
+			p->ret = create(fp, stack);
+			break;
+		case ( SYS_YIELD):
+			ready(p);
+			p = next();
+			break;
+		case ( SYS_STOP):
+			p->state = STATE_STOPPED;
+			p = next();
+			break;
+		//cases for A2
+		case(SYS_GETPID):
+			p->ret = p->pid;
+			p = next();
+			break;
+		case(SYS_PUTS):
 
-      r = contextswitch( p );
-      switch( r ) {
-      case( SYS_CREATE ):
-        ap = (va_list)p->args;
-        fp = (funcptr)(va_arg( ap, int ) );
-        stack = va_arg( ap, int );
-	p->ret = create( fp, stack );
-        break;
-      case( SYS_YIELD ):
-        ready( p );
-        p = next();
-        break;
-      case( SYS_STOP ):
-        p->state = STATE_STOPPED;
-        p = next();
-        break;
-      default:
-        kprintf( "Bad Sys request %d, pid = %d\n", r, p->pid );
-      }
-    }
+			p = next();
+			break;
+		case(SYS_KILL):
 
-    kprintf( "Out of processes: dying\n" );
-    
-    for( ;; );
+			p = next();
+			break;
+		default:
+			kprintf("Bad Sys request %d, pid = %d\n", r, p->pid);
+		}
+	}
+
+	kprintf("Out of processes: dying\n");
+
+	for (;;)
+		;
 }
 
-extern void dispatchinit( void ) {
-/********************************/
+extern void dispatchinit(void) {
+	/********************************/
 
-  //bzero( proctab, sizeof( pcb ) * MAX_PROC );
-  memset(proctab, 0, sizeof( pcb ) * MAX_PROC);
+	//bzero( proctab, sizeof( pcb ) * MAX_PROC );
+	memset(proctab, 0, sizeof(pcb) * MAX_PROC);
 }
 
-extern void     ready( pcb *p ) {
-/*******************************/
+extern void ready(pcb *p) {
+	/*******************************/
 
-    p->next = NULL;
-    p->state = STATE_READY;
+	p->next = NULL;
+	p->state = STATE_READY;
 
-    if( tail ) {
-        tail->next = p;
-    } else {
-        head = p;
-    }
+	if (tail) {
+		tail->next = p;
+	} else {
+		head = p;
+	}
 
-    tail = p;
+	tail = p;
 }
 
-extern pcb      *next( void ) {
-/*****************************/
+extern pcb *next(void) {
+	/*****************************/
 
-    pcb *p;
+	pcb *p;
 
-    p = head;
+	p = head;
 
-    if( p ) {
-        head = p->next;
-        if( !head ) {
-            tail = NULL;
-        }
-    }
+	if (p) {
+		head = p->next;
+		if (!head) {
+			tail = NULL;
+		}
+	}
 
-    return( p );
+	return (p);
 }
 

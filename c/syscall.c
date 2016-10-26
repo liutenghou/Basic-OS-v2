@@ -45,3 +45,23 @@ void sysyield( void ) {
 
    syscall( SYS_STOP );
 }
+
+//A2 additions
+
+//gets PID of the current process
+extern int sysgetpid(void){
+	return syscall(SYS_GETPID);
+}
+
+/*synchronizes output to screen between processes
+input: null terminated string, to be displayed by kernel
+kernel uses kprintf to display string
+*/
+extern void sysputs(char *str){
+	syscall(SYS_PUTS);
+}
+
+//takes PID as int, kills process
+extern int syskill(int pid){
+	return syscall(SYS_KILL);
+}

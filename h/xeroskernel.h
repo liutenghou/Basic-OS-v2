@@ -128,6 +128,15 @@ void     set_evec(unsigned int xnum, unsigned long handler);
 void     printCF (void * stack);  /* print the call frame */
 int      syscall(int call, ...);  /* Used in the system call stub */
 
+//A2
+#define SYS_GETPID 34
+#define SYS_PUTS 35
+#define SYS_KILL 36
+
+extern int sysgetpid(void);
+extern void sysputs(char *str);
+extern int syskill(int pid);
+
 
 
 /* Function prototypes for system calls as called by the application */

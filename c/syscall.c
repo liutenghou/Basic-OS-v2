@@ -63,14 +63,20 @@ extern void sysputs(char *str){
 
 //takes PID as int, kills process
 extern int syskill(int pid){
-	return syscall(SYS_KILL);
+	return syscall(SYS_KILL, pid);
 }
 
 //3.3 IPC system calls
 
-extern int syssend(int dest_pid, unsigned long num){
+/*
+ * Sends a message to another process, syssend is blocked until msg is received
+ * parameters: destination pid, msg to send
+ * returns: 0 on succcess, -1 if dest is dead, -2 if send to self, -3 if other err
+ *
+ */
+extern int syssend(int dest_pid, unsigned long msg){
 	return -1;
 }
-extern int sysrecv(unsigned int *from_pid, unsigned long *num){
+extern int sysrecv(unsigned int *from_pid, unsigned long *msg){
 	return -1;
 }

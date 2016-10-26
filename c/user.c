@@ -11,7 +11,7 @@
 
     for( i = 0; i < 5; i++ ) {
 //    	sysputs("produce?");
-        kprintf( "Produce %d\n", i );
+        kprintf( "Produce %d . ", i );
         sysyield();
     }
 

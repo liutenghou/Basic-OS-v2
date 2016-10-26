@@ -139,8 +139,8 @@ extern void sysputs(char *str);
 extern int syskill(int pid);
 
 //3.3 IPC
-extern int syssend(int dest_pid, unsigned long num);
-extern int sysrecv(unsigned int *from_pid, unsigned long *num);
+extern int syssend(int dest_pid, unsigned long msg);
+extern int sysrecv(unsigned int *from_pid, unsigned long *msg);
 
 
 /* Function prototypes for system calls as called by the application */

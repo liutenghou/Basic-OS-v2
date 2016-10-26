@@ -8,6 +8,7 @@
 static pcb *head = NULL;
 static pcb *tail = NULL;
 
+
 void dispatch(void) {
 	/********************************/
 
@@ -17,6 +18,7 @@ void dispatch(void) {
 	int stack;
 	va_list ap;
 	char *s;
+	int toPID;
 
 	for (p = next(); p;) {
 		//      kprintf("Process %x selected stck %x\n", p, p->esp);
@@ -48,7 +50,9 @@ void dispatch(void) {
 			p = next();
 			break;
 		case(SYS_KILL):
-			p->state = STATE_DEAD;
+			ap = (va_list)p->args;
+			toPID = va_arg(ap, int);
+			killprocess(toPID);
 			p = next();
 			break;
 		default:
@@ -101,3 +105,12 @@ extern pcb *next(void) {
 	return (p);
 }
 
+void killprocess(int pid){
+	int i;
+	for(i=0; i<MAX_PROC; i++){
+		if(proctab[i].pid == pid){
+			proctab[i].state = STATE_STOPPED;
+		}
+		break;
+	}
+}

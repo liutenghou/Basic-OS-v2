@@ -75,8 +75,29 @@ extern int syskill(int pid){
  *
  */
 extern int syssend(int dest_pid, unsigned long msg){
+	//dest is dead, not found
+	if(getPCBbyPID(dest_pid) == NULL){
+		return -1;
+	}
+	//destination is self
+	if(dest_pid == sysgetpid()){
+		return -2;
+	}
+
+
 	return -1;
 }
 extern int sysrecv(unsigned int *from_pid, unsigned long *msg){
 	return -1;
+}
+
+extern pcb* getPCBbyPID(int pid){
+	pcb *p;
+	int i;
+	for(i=0; i<MAX_PROC; i++){
+		if(proctab[i].pid == pid){
+			return &proctab[i];
+		}
+	}
+	return NULL;
 }

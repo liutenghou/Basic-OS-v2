@@ -10,7 +10,8 @@
     int         i;
 
     for( i = 0; i < 5; i++ ) {
-//    	sysputs("produce?");
+    	//TODO: why doesn't sysputs repeat 5 times?
+    	//sysputs("produce?");
         kprintf( "Produce %d . ", i );
         sysyield();
     }
@@ -24,6 +25,7 @@
     int         i;
 
     for( i = 0; i < 5; i++ ) {
+    	//sysputs("consume\n");
         kprintf( "Consume %d \n", i );
         sysyield();
     }

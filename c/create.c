@@ -32,6 +32,9 @@ int create( funcptr fp, size_t stackSize ) {
      * error.
      */
 
+    //propose net pid
+    //scane to see if in table
+
 
     if (nextpid < 0) 
       return CREATE_FAILURE;
@@ -42,6 +45,7 @@ int create( funcptr fp, size_t stackSize ) {
         stackSize = PROC_STACK;
     }
 
+    //find a stopped process
     for( i = 0; i < MAX_PROC; i++ ) {
         if( proctab[i].state == STATE_STOPPED ) {
             p = &proctab[i];
@@ -66,6 +70,7 @@ int create( funcptr fp, size_t stackSize ) {
         return CREATE_FAILURE;
     }
 
+    //TODO: explain
     cf = (context_frame *)((unsigned char *)cf + stackSize - 4);
     cf--;
 

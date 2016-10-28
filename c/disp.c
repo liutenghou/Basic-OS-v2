@@ -19,6 +19,7 @@ void dispatch(void) {
 	va_list ap;
 	char *s;
 	int toPID;
+	int msg;
 
 	for (p = next(); p;) {
 		//      kprintf("Process %x selected stck %x\n", p, p->esp);
@@ -33,6 +34,7 @@ void dispatch(void) {
 			break;
 		case ( SYS_YIELD):
 			ready(p);
+			p->ret = 0; //arbitrary value
 			p = next();
 			break;
 		case ( SYS_STOP):
@@ -42,18 +44,24 @@ void dispatch(void) {
 		//cases for A2
 		case(SYS_GETPID):
 			p->ret = p->pid;
-			p = next();
 			break;
 		case(SYS_PUTS):
 			ap = (va_list)p->args;
 			kprintf("%s", va_arg(ap, char *));
-			p = next();
 			break;
 		case(SYS_KILL):
 			ap = (va_list)p->args;
 			toPID = va_arg(ap, int);
 			killprocess(toPID);
 			p = next();
+			break;
+		case(SYS_SEND):
+			ap = (va_list)p->args;
+			//dest_pid, then msg
+			toPID = va_arg(ap, int);
+			msg = va_arg(ap, unsigned long);
+			kprintf("SYS_SEND, toPID:%d, msg:%d", toPID, msg);
+			p->ret = 0;
 			break;
 		default:
 			kprintf("Bad Sys request %d, pid = %d\n", r, p->pid);
@@ -82,7 +90,7 @@ extern void ready(pcb *p) {
 	if (tail) {
 		tail->next = p;
 	} else {
-		head = p;
+		head = p; //only process, put itself at head
 	}
 
 	tail = p;

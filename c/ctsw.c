@@ -8,7 +8,7 @@
 void _KernelEntryPoint(void);
 
 static unsigned long      *saveESP;
-static unsigned int        rc;
+static unsigned int        rc; //process return code
 static long                args;
 
 int contextswitch( pcb *p ) {
@@ -76,7 +76,7 @@ int contextswitch( pcb *p ) {
 
     /* save esp and read in the arguments
      */
-    p->esp = saveESP;
+    p->esp = saveESP; //of process
     p->args = args;
 
     return rc;

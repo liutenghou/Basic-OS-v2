@@ -57,7 +57,7 @@ void           outb(unsigned int, unsigned char);
 /* Constants to track states that a process is in */
 #define STATE_STOPPED   0
 #define STATE_READY     1
-#define STATE_DEAD		2
+#define STATE_BLOCKED	2
 
 
 /* System call identifiers */
@@ -78,7 +78,7 @@ struct struct_pcb {
   int             ret;    /* Return value of system call             */
                           /* if process interrupted because of system*/
                           /* call                                    */
-  long            args;   
+  long            args;
 };
 
 
@@ -94,9 +94,9 @@ typedef struct context_frame {
   unsigned long        ebp;
   unsigned long        esp;
   unsigned long        ebx;
-  unsigned long        edx;
+  unsigned long        edx; //20: va_list ap
   unsigned long        ecx;
-  unsigned long        eax;
+  unsigned long        eax; //28: sys_req
   unsigned long        iret_eip;
   unsigned long        iret_cs;
   unsigned long        eflags;
@@ -129,10 +129,11 @@ void     set_evec(unsigned int xnum, unsigned long handler);
 void     printCF (void * stack);  /* print the call frame */
 int      syscall(int call, ...);  /* Used in the system call stub */
 
-//A2
-#define SYS_GETPID 34
-#define SYS_PUTS 35
-#define SYS_KILL 36
+//A2 sys call identifiers
+#define SYS_GETPID 	34
+#define SYS_PUTS 	35
+#define SYS_KILL 	36
+#define SYS_SEND 	37
 
 extern int sysgetpid(void);
 extern void sysputs(char *str);

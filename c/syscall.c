@@ -25,7 +25,7 @@ int syscall( int req, ... ) {
     );
  
     va_end( ap );
-
+    //kprintf("req: %d. rc: %d ", req, rc);
     return( rc );
 }
 
@@ -77,15 +77,18 @@ extern int syskill(int pid){
 extern int syssend(int dest_pid, unsigned long msg){
 	//dest is dead, not found
 	if(getPCBbyPID(dest_pid) == NULL){
+		kprintf("syssend: dest not exist\n");
 		return -1;
 	}
 	//destination is self
 	if(dest_pid == sysgetpid()){
+		kprintf("syssend: dest same as self\n");
 		return -2;
 	}
+	//other error?
 
 
-	return -1;
+	return syscall(SYS_SEND, dest_pid, msg);
 }
 extern int sysrecv(unsigned int *from_pid, unsigned long *msg){
 	return -1;

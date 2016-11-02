@@ -74,7 +74,7 @@ int create( funcptr fp, size_t stackSize ) {
     cf = (context_frame *)((unsigned char *)cf + stackSize - 4);
     cf--;
 
-    memset(cf, 0xA5, sizeof( context_frame ));
+    memset(cf, 0xB0, sizeof( context_frame ));
 
     cf->iret_cs = getCS();
     cf->iret_eip = (unsigned int)fp;

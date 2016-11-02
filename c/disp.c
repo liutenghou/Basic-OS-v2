@@ -7,12 +7,12 @@
 
 static pcb *head = NULL;
 static pcb *tail = NULL;
-
+pcb *p;
 
 void dispatch(void) {
 	/********************************/
 
-	pcb *p;
+
 	int r;
 	funcptr fp;
 	int stack;
@@ -43,7 +43,7 @@ void dispatch(void) {
 			break;
 		//cases for A2
 		case(SYS_GETPID):
-			p->ret = p->pid;
+			p->ret = p->pid; //TODO: why doesn't this work?
 			break;
 		case(SYS_PUTS):
 			ap = (va_list)p->args;
@@ -60,8 +60,9 @@ void dispatch(void) {
 			//dest_pid, then msg
 			toPID = va_arg(ap, int);
 			msg = va_arg(ap, unsigned long);
-			kprintf("SYS_SEND, toPID:%d, msg:%d", toPID, msg);
-			p->ret = 0;
+			//kprintf("SYS_SEND, toPID:%d, msg:%d", toPID, msg);
+
+			p->ret = send(toPID, msg);
 			break;
 		default:
 			kprintf("Bad Sys request %d, pid = %d\n", r, p->pid);
@@ -121,4 +122,8 @@ void killprocess(int pid){
 		}
 		break;
 	}
+}
+
+int getCurrentPID(){
+	return p->pid;
 }

@@ -78,6 +78,7 @@ struct struct_pcb {
   int             ret;    /* Return value of system call             */
                           /* if process interrupted because of system*/
                           /* call                                    */
+  int				msg;
   long            args;
 };
 
@@ -143,6 +144,9 @@ extern int syskill(int pid);
 extern int syssend(int dest_pid, unsigned long msg);
 extern int sysrecv(unsigned int *from_pid, unsigned long *msg);
 extern pcb* getPCBbyPID(int pid);
+//in msg.c
+int send(int toPID, int msg);
+int getCurrentPID(void);
 
 
 /* Function prototypes for system calls as called by the application */

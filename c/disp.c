@@ -64,7 +64,8 @@ void dispatch(void) {
 
 			p->ret = send(toPID, msg);
 			if(p->state == STATE_BLOCKED){ //message not sent
-				kprintf("-message send FAIL-");
+				kprintf("-message send FAIL-senderonqueue:%d-",getProcessFromPID(toPID)->sender->pid);
+
 			}else{ //msg sent successfully, place both on ready queue
 				kprintf("-message sent OK-");
 				kprintf("-message:%d-",getProcessFromPID(toPID)->msg);

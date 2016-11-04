@@ -63,6 +63,15 @@ void dispatch(void) {
 			//kprintf("SYS_SEND, toPID:%d, msg:%d", toPID, msg);
 
 			p->ret = send(toPID, msg);
+			if(p->state == STATE_BLOCKED){ //message not sent
+				kprintf("-message send FAIL-");
+			}else{ //msg sent successfully, place both on ready queue
+				kprintf("-message sent OK-");
+				kprintf("-message:%d-",getProcessFromPID(toPID)->msg);
+
+				ready(p);
+				ready(getProcessFromPID(toPID));
+			}
 			break;
 		default:
 			kprintf("Bad Sys request %d, pid = %d\n", r, p->pid);
@@ -82,35 +91,33 @@ extern void dispatchinit(void) {
 	memset(proctab, 0, sizeof(pcb) * MAX_PROC);
 }
 
+//sets a process p
+//puts it in back of readyqueue
 extern void ready(pcb *p) {
 	/*******************************/
-
 	p->next = NULL;
 	p->state = STATE_READY;
 
 	if (tail) {
-		tail->next = p;
+		tail->next = p; //put at back of ready queue
 	} else {
 		head = p; //only process, put itself at head
 	}
-
 	tail = p;
 }
 
+//pull first process from readyqueue
+//set head as second process on readyqueue
 extern pcb *next(void) {
 	/*****************************/
-
 	pcb *p;
-
 	p = head;
-
 	if (p) {
 		head = p->next;
-		if (!head) {
+		if (!head) { //if no other processes beside head
 			tail = NULL;
 		}
 	}
-
 	return (p);
 }
 

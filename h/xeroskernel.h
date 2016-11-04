@@ -78,7 +78,9 @@ struct struct_pcb {
   int             ret;    /* Return value of system call             */
                           /* if process interrupted because of system*/
                           /* call                                    */
-  int				msg;
+  int				msg; //received message from another process
+  pcb 			*sender;
+  pcb			*nextSender;
   long            args;
 };
 
@@ -135,6 +137,7 @@ int      syscall(int call, ...);  /* Used in the system call stub */
 #define SYS_PUTS 	35
 #define SYS_KILL 	36
 #define SYS_SEND 	37
+#define SYS_RECV	38
 
 extern int sysgetpid(void);
 extern void sysputs(char *str);
@@ -143,7 +146,9 @@ extern int syskill(int pid);
 //3.3 IPC
 extern int syssend(int dest_pid, unsigned long msg);
 extern int sysrecv(unsigned int *from_pid, unsigned long *msg);
-extern pcb* getPCBbyPID(int pid);
+extern int sysreceive( unsigned int *from_pid, unsigned long * msg);
+extern pcb* getProcessFromPID(int pid);
+void killprocess(int pid);
 //in msg.c
 int send(int toPID, int msg);
 int getCurrentPID(void);

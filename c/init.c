@@ -37,8 +37,10 @@ void initproc( void )				/* The beginning */
   
   dispatchinit();
   kprintf("dispatcher inited\n");
-  
+  //TODO: continue here, sends junk to dispatcher
+
   contextinit();
+  initPIT(100);
   kprintf("context inited\n");
   
   

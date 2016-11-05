@@ -14,7 +14,6 @@
         syssend(1,101);
         sysyield();
     }
-    //syssend(2, 55);
     sysstop();
 }
 

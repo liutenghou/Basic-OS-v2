@@ -52,6 +52,10 @@ void           outb(unsigned int, unsigned char);
 #define KERNEL_INT      80
    /* Minimum size of a stack when a process is created */
 #define PROC_STACK      (4096 * 4)    
+
+//A2 3.5 Timer entry point
+#define TIMER_INT		32
+#define SYSCALL_INT		33
                       
 
 /* Constants to track states that a process is in */
@@ -64,8 +68,6 @@ void           outb(unsigned int, unsigned char);
 #define SYS_STOP        10
 #define SYS_YIELD       11
 #define SYS_CREATE      22
-#define SYS_TIMER       33
-
 
 /* Structure to track the information associated with a single process */
 
@@ -138,6 +140,7 @@ int      syscall(int call, ...);  /* Used in the system call stub */
 #define SYS_KILL 	36
 #define SYS_SEND 	37
 #define SYS_RECV	38
+#define SYS_TIMER	39
 
 extern int sysgetpid(void);
 extern void sysputs(char *str);

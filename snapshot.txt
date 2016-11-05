@@ -1,25 +1,25 @@
-11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. r
-c: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3
-req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req:
-11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. r
-c: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3
-req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req:
-11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. r
-c: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3
-req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req:
-11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. r
-c: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3
-req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req:
-11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. r
-c: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3
-req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req:
-11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. r
-c: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3
-req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req:
-11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. r
-c: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3
-req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req:
-11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. r
-c: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3
-req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req: 11. rc: 3 req:
-11. r
+dispatcher inited
+context inited
+create inited
+RootPID = 1, P1PID = 2, ConPID:3, P2PID:4, P3PID:5, P4PID:6
+Produce 0
+frompid:2 - destpid:1 - msg:101
+-message send FAIL-senderonqueue:2-Consume 0
+-Produce2--PBad Sys request 9220, pid = 5
+trap!
+exception 13 (general protection violation)
+Address of sp 1d108 value of sp 1d14c
+eflags 8 CS: 13e0 eip b0b0
+error code 00000000 (0)
+register dump:
+eax 00000072 (114)
+ecx 00000372 (882)
+edx 00002403 (9219)
+ebx 0001d140 (119104)
+esp 0001d140 (119104)
+ebp b0b0b0b0 (2964369584)
+esi 00000020 (32)
+edi 0000000d (13)
+
+Halting.....
+ß

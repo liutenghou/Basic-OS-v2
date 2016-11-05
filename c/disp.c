@@ -69,10 +69,14 @@ void dispatch(void) {
 			}else{ //msg sent successfully, place both on ready queue
 				kprintf("-message sent OK-");
 				kprintf("-message:%d-",getProcessFromPID(toPID)->msg);
-
 				ready(p);
 				ready(getProcessFromPID(toPID));
 			}
+			break;
+		case(SYS_TIMER):
+			ready(p);
+			p = next();
+			end_of_intr();
 			break;
 		default:
 			kprintf("Bad Sys request %d, pid = %d\n", r, p->pid);

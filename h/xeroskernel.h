@@ -131,6 +131,7 @@ int syscall(int call, ...); /* Used in the system call stub */
 #define SYS_SEND 	37
 #define SYS_RECV	38
 #define SYS_TIMER	39
+#define SYS_SLEEP 	40
 
 extern int sysgetpid(void);
 extern void sysputs(char *str);
@@ -149,6 +150,10 @@ int getCurrentPID(void);
 extern void idleproc(void);
 pcb* getIdleProcPCB(void);
 int getIdlePID(void);
+
+//3.7 syssleep
+extern unsigned int syssleep( unsigned int milliseconds );
+unsigned int sleep(unsigned int millisec);
 
 /* Function prototypes for system calls as called by the application */
 int syscreate(funcptr fp, size_t stack);

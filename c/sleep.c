@@ -6,3 +6,8 @@
 #include <xeroslib.h>
 
 /* Your code goes here */
+unsigned int sleep(unsigned int millisec){
+
+
+	return 0;
+}

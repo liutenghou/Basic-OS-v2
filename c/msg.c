@@ -60,18 +60,5 @@ int send(int dest_pid, int msg){
 
 //receive called by dispatcher upon sysreceive request
 int receive(){
-
 	return 0;
-}
-
-extern pcb* getProcessFromPID(int pid){
-	pcb *p;
-	int i;
-	for(i=0; i<MAX_PROC; i++){
-		if(proctab[i].pid == pid){
-			//kprintf(" TOPIDINgetPCBbyPID:%d ",proctab[i].pid);
-			return &proctab[i];
-		}
-	}
-	return NULL;
 }

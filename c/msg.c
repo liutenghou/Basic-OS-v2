@@ -58,7 +58,48 @@ int send(int dest_pid, int msg){
 	return 0;
 }
 
-//receive called by dispatcher upon sysreceive request
-int receive(){
-	return 0;
+// kernel side: receives call by dispatcher upon sysreceive request from user process
+// arguments: srcPID: source proess pid, buffer: msg copied from sender into buffer, len: message length
+// return: returns length 
+int receive(int *srcPID, void *buffer, int len){
+	kprintf("Receiving message from sender");
+
+	// why pointer to srcPID? from the struct?
+	pcb->srcPID = sysgetpid();
+	// receiving process sender
+	pcb *receiving_p = getProcessFromPID(receiving_p);
+
+	// if srcPID does not exist
+	if (srcPID == NULL) {
+		return -1;
+	}
+
+	// if sender is waiting for msg from receiver (so basically it is blocked)
+	if (srcPID->state == STATE_BLOCKED) {
+		// sender's msg copied into buffer from receiving process
+		buffer = srcPID->msg;
+		// sender than put onto the ready queue
+		srcPID->state = STATE_READY;
+	}
+
+	// if no process abailable to send
+	else { 
+		if (srcPID->state != STATE_READY) {
+			receiving_p->state = STATE_BLOCKED;
+
+	}
+	// kill sender process
+	else { if (srcPID->state != STATE_BLOCKED) {
+		pcb->sender = killprocess(srcPID);
+		pcb->msg = 0;
+		kprintf("Message will never arrived");
+		return -1;
+	}
+
+	}
+
+	}
+
+
+	return len;
 }

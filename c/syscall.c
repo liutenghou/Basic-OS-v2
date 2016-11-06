@@ -50,7 +50,8 @@ void sysyield( void ) {
 
 //gets PID of the current process
 extern int sysgetpid(void){
-	return syscall(SYS_GETPID);
+	return getCurrentPID();
+	//return syscall(SYS_GETPID);
 }
 
 /*synchronizes output to screen between processes
@@ -75,33 +76,15 @@ extern int syskill(int pid){
  *
  */
 extern int syssend(int dest_pid, unsigned long msg){
-	//dest is dead, not found
-	if(getPCBbyPID(dest_pid) == NULL){
-		kprintf("syssend: dest not exist\n");
-		return -1;
-	}
-	//destination is self
-	if(dest_pid == sysgetpid()){
-		kprintf("syssend: dest same as self\n");
-		return -2;
-	}
-	//other error?
-
-
 	return syscall(SYS_SEND, dest_pid, msg);
 }
+
+extern int sysreceive( unsigned int *from_pid, unsigned long * msg){
+	return syscall(SYS_RECV, from_pid, msg);
+}
+
 extern int sysrecv(unsigned int *from_pid, unsigned long *msg){
 
 	return -1;
 }
 
-extern pcb* getPCBbyPID(int pid){
-	pcb *p;
-	int i;
-	for(i=0; i<MAX_PROC; i++){
-		if(proctab[i].pid == pid){
-			return &proctab[i];
-		}
-	}
-	return NULL;
-}

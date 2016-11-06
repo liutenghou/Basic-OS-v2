@@ -7,7 +7,7 @@
 pcb     proctab[MAX_PROC];
 
 /* make sure interrupts are armed later on in the kernel development  */
-#define STARTING_EFLAGS         0x00003200 //TODO:double check
+#define STARTING_EFLAGS         0x00003200
 
 // PIDs can't start at 0 nor can they be negative
 static int      nextpid = 1;
@@ -74,7 +74,7 @@ int create( funcptr fp, size_t stackSize ) {
     cf = (context_frame *)((unsigned char *)cf + stackSize - 4);
     cf--;
 
-    memset(cf, 0xA5, sizeof( context_frame ));
+    memset(cf, 0xB0, sizeof( context_frame ));
 
     cf->iret_cs = getCS();
     cf->iret_eip = (unsigned int)fp;

@@ -6,10 +6,13 @@
 
 
 void _KernelEntryPoint(void);
+void _TimerEntryPoint(void);
+void _SyscallEntryPoint(void);
 
 static unsigned long      *saveESP;
 static unsigned int        rc; //process return code
 static long                args;
+static int				interruptType = 0;
 
 int contextswitch( pcb *p ) {
 /**********************************/
@@ -56,9 +59,18 @@ int contextswitch( pcb *p ) {
         movl    %%eax, 28(%%esp) \n\
         popa \n\
         iret \n\
+    _TimerEntryPoint: \n\
+        cli \n\
+        pusha   \n\
+    	movl $32, interruptType \n\
+        jmp    _KernelEntryPoint \n\
+    _SyscallEntryPoint: \n\
+        cli \n\
+        pusha \n\
+        movl $33, interruptType \n\
+        jmp     _KernelEntryPoint \n\
    _KernelEntryPoint: \n\
-        pusha  \n\
-        movl    %%eax, %%ebx \n\  
+        movl    %%eax, %%ebx \n\
         movl    saveESP, %%eax  \n\
         movl    %%esp, saveESP  \n\
         movl    %%eax, %%esp  \n\
@@ -78,13 +90,13 @@ int contextswitch( pcb *p ) {
      */
     p->esp = saveESP; //of process
     p->args = args;
-
+    //kprintf("-INTType:%d-", interruptType);
     return rc;
 }
 
 void contextinit( void ) {
 /*******************************/
 
-  set_evec( KERNEL_INT, (int) _KernelEntryPoint );
-
+  set_evec(KERNEL_INT, (int) _SyscallEntryPoint);
+  set_evec(TIMER_INT, (int) _TimerEntryPoint);
 }

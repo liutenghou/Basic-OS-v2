@@ -87,3 +87,7 @@ extern int sysrecv(unsigned int *from_pid, unsigned long *msg){
     return syscall(from_pid, msg);
 }
 
+extern unsigned int syssleep(unsigned int milliseconds) {
+    return 0;
+}
+

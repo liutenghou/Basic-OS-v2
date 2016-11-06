@@ -58,7 +58,7 @@ int contextswitch( pcb *p ) {
         iret \n\
    _KernelEntryPoint: \n\
         pusha  \n\
-        movl    %%eax, %%ebx \n\
+        movl    %%eax, %%ebx \n\  
         movl    saveESP, %%eax  \n\
         movl    %%esp, saveESP  \n\
         movl    %%eax, %%esp  \n\

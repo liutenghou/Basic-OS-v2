@@ -84,7 +84,6 @@ extern int sysreceive( unsigned int *from_pid, unsigned long * msg){
 }
 
 extern int sysrecv(unsigned int *from_pid, unsigned long *msg){
-
-	return -1;
+    return syscall(from_pid, msg);
 }
 

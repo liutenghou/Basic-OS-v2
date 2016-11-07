@@ -11,11 +11,14 @@ static pcb *tail = NULL;
 
 void dispatch(void) {
 	/********************************/
-
+	
+	// next ready process in the queue
 	pcb *p;
 	int r;
 	funcptr fp;
+	// size of the process
 	int stack;
+	// variable length list of arguments
 	va_list ap;
 	char *s;
 	int toPID;

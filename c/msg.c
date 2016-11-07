@@ -61,46 +61,44 @@ int send(int dest_pid, int msg){
 // kernel side: receives call by dispatcher upon sysreceive request from user process
 // arguments: srcPID: source proess pid, buffer: msg copied from sender into buffer, len: message length
 // return: returns length 
-int receive(int *srcPID, void *buffer, int len){
-	kprintf("Receiving message from sender");
+int receive(int srcPID, void *buffer, int *len){
+	
+	// kernel should send the original sender's id from which the process receives from
+	// and where it is sending to
+	pcb *receiving_p = getProcessFromPID(receiving_p);	
+	pcb *sender_p = getProcessFromPID(srcPID);
+	// kernel needs to know where to send too
+	int receiving_pid = sysgetpid();
 
-	// why pointer to srcPID? from the struct?
-	pcb->srcPID = sysgetpid();
-	// receiving process sender
-	pcb *receiving_p = getProcessFromPID(receiving_p);
-
-	// if srcPID does not exist
-	if (srcPID == NULL) {
+	// if receiving pid does not exist
+	if (receiving_pid == NULL) {
 		return -1;
 	}
-
-	// if sender is waiting for msg from receiver (so basically it is blocked)
-	if (srcPID->state == STATE_BLOCKED) {
-		// sender's msg copied into buffer from receiving process
-		buffer = srcPID->msg;
-		// sender than put onto the ready queue
-		srcPID->state = STATE_READY;
+	
+	if (srcPID == receiving_pid) {
+	kprintf("receive: cannot receive from itself \n");
+	return -1;
 	}
 
-	// if no process abailable to send
-	else { 
-		if (srcPID->state != STATE_READY) {
-			receiving_p->state = STATE_BLOCKED;
-
+	// if sender is waiting, let the sender put msg in the buffer then put sender on the ready queue
+	if (sender_p->state == STATE_BLOCKED) {
+	    sender_p->msg = buffer;
+	    ready(sender_p);
 	}
-	// kill sender process
-	else { if (srcPID->state != STATE_BLOCKED) {
-		pcb->sender = killprocess(srcPID);
-		pcb->msg = 0;
-		kprintf("Message will never arrived");
-		return -1;
+	
+	// if no sender waiting, receiving process waits; but isnt 
+	if (receiving_p->nextSender->state != STATE_READY) {
+	sender_p->msg = 0;
+	sender_p->buffer = NULL;
 	}
 
-	}
+	// no process available to send
+	if (sender_p-> != STATE_READY) {
+	kprintf("No process available to send");
+	reutrn -1;	
 
-	}
-
-
+	}	
+	
 	return len;
 }
 

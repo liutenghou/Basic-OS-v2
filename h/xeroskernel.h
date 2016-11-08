@@ -154,6 +154,7 @@ int getIdlePID(void);
 //3.7 syssleep
 extern unsigned int syssleep( unsigned int milliseconds );
 unsigned int sleep(unsigned int millisec);
+void tick(void);
 
 /* Function prototypes for system calls as called by the application */
 int syscreate(funcptr fp, size_t stack);

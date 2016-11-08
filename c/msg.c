@@ -61,7 +61,8 @@ int send(int dest_pid, int msg){
 // kernel side: receives call by dispatcher upon sysreceive request from user process
 // arguments: srcPID: source proess pid, buffer: msg copied from sender into buffer, len: message length
 // return: returns length 
-int receive(int srcPID, void *buffer, int *len){
+int receive(int receiving_pid, int msg){
+	kprintf("frompid:%d - srcpid:%d - msg:%d\n", sysgetpid(), srcPID, msg);
 	
 	// kernel should send the original sender's id from which the process receives from
 	// and where it is sending to
@@ -77,27 +78,25 @@ int receive(int srcPID, void *buffer, int *len){
 	
 	if (srcPID == receiving_pid) {
 	kprintf("receive: cannot receive from itself \n");
-	return -1;
-	}
-
-	// if sender is waiting, let the sender put msg in the buffer then put sender on the ready queue
-	if (sender_p->state == STATE_BLOCKED) {
-	    sender_p->msg = buffer;
-	    ready(sender_p);
+	return -2;
 	}
 	
-	// if no sender waiting, receiving process waits; but isnt 
-	if (receiving_p->nextSender->state != STATE_READY) {
-	sender_p->msg = 0;
-	sender_p->buffer = NULL;
+	// if receiver is called before the matching send, put it on block until matching sends occur
+	if (receiving_p->state != STATE_BLOCKED) {
+		if (receiving_p->sender != STATE_READY) {
+		receiving_p->state = STATE_BLOCKED;
+		// dont know what to do for it to keep waiting for send to be ready...
+	} else {
+		receiving_p->msg = msg;
+		receiving_p->state = STATE_READY;
+		sender_p->state = STATE_READY;
 	}
-
-	// no process available to send
-	if (sender_p-> != STATE_READY) {
-	kprintf("No process available to send");
-	reutrn -1;	
-
+	}
+	// earliest outstanding send to receiving process (earliest unreceived send) is the matching send to receive... dont get this
+	if (receiving_pid == 0) {
+		return 0;
 	}	
+	
 	
 	return len;
 }

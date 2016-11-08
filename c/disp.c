@@ -22,7 +22,7 @@ void dispatch(void) {
 	char *s;
 	int toPID;
 	int msg;
-
+	
 	for (p = next(); p;) {
 		//      kprintf("Process %x selected stck %x\n", p, p->esp);
 		if(p == NULL){

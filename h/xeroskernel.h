@@ -57,6 +57,9 @@ void outb(unsigned int, unsigned char);
 #define STATE_STOPPED   0
 #define STATE_READY     1
 #define STATE_BLOCKED	2
+#define RECV_BLOCKED    3
+#define SEND_BLOCKED 	4
+
 
 /* System call identifiers */
 #define SYS_STOP        10
@@ -74,6 +77,8 @@ struct struct_pcb {
 	int ret; /* Return value of system call             */
 	/* if process interrupted because of system*/
 	/* call                                    */
+	struct msg_buffer buffer; // buffer for receive to put msg in
+	struct pcb* msg_queue; // queue of senders
 	int msg; //received message from another process
 	pcb *sender;
 	pcb *nextSender;
@@ -141,6 +146,13 @@ extern int syssend(int dest_pid, unsigned long msg);
 extern int sysrecv(unsigned int *from_pid, unsigned long *msg);
 extern int sysreceive(unsigned int *from_pid, unsigned long * msg);
 extern pcb* getProcessFromPID(int pid);
+
+// IPC 
+struct msg_buffer {
+	int ipc_pid;
+	void* addr;
+	int size;
+};
 
 void killprocess(int pid);
 //in msg.c

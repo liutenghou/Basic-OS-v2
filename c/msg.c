@@ -62,7 +62,7 @@ int send(int dest_pid, int msg){
 // arguments: srcPID: source proess pid, buffer: msg copied from sender into buffer, len: message length
 // return: returns length 
 int receive(int receiving_pid, int msg){
-	kprintf("frompid:%d - srcpid:%d - msg:%d\n", sysgetpid(), srcPID, msg);
+	kprintf("frompid:%d - receivingpid:%d - msg:%d\n", sysgetpid(), srcPID, msg);
 	
 	// kernel should send the original sender's id from which the process receives from
 	// and where it is sending to

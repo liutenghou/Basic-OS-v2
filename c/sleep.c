@@ -9,9 +9,16 @@ void decrementTimes(pcb *p, unsigned long t);
 
 pcb* sleepers = NULL; //is a delta list
 
-unsigned int sleep(unsigned int millisec){
+/*
+
+NOTE: this does NOT handle the case where the same process
+is added on the queue multiple times
+
+ */
+unsigned int sleep(unsigned long millisec){
 
 	pcb *currentProcess = getCurrentProcess();
+	kprintf("currentPID:%d.", currentProcess->pid);
 	pcb *temp = sleepers;
 	pcb *tempPrev = sleepers;
 	//TODO: uncomment this, after testing
@@ -19,6 +26,8 @@ unsigned int sleep(unsigned int millisec){
 	unsigned long ticks = millisec;
 	unsigned long diffTicks = ticks;
 	unsigned long prevTicks = ticks;
+
+
 
 	//place current process in list of sleeping processes
 	if(sleepers == NULL){ //initial
@@ -31,20 +40,21 @@ unsigned int sleep(unsigned int millisec){
 	}else{
 		//find the sleeper the process is suppose to go after or before
 		while(temp!=NULL){
+			tempPrev = temp;
 			prevTicks = diffTicks;
 			diffTicks = (diffTicks - temp->sleeptime);
 			kprintf("-NXT-");
 			if(diffTicks <= 0){
 				diffTicks = prevTicks;
+				kprintf("diffTicks:%d.", diffTicks);
 				break;
 			}
-			tempPrev = temp;
+
 			temp = temp->nextSleeper;
 		}
+		kprintf("tempPrevST:%d.CP:%d.dt:%d.", tempPrev->sleeptime, currentProcess->pid, diffTicks);
 
-
-		if(temp == sleepers){ //goes before everything
-
+		if(temp == sleepers){ //add to beginning
 			sleepers = currentProcess;
 			sleepers->nextSleeper = temp;
 			sleepers->sleeptime = diffTicks;
@@ -53,10 +63,13 @@ unsigned int sleep(unsigned int millisec){
 			kprintf("+B+");
 			printSleepQueue();
 		}else if(temp == NULL){ //add to end
+			kprintf("tempPrevVal:%d.",tempPrev->sleeptime);
+
 			tempPrev->nextSleeper = currentProcess;
-			currentProcess->sleeptime = diffTicks;
-			currentProcess->nextSleeper = NULL;
-			currentProcess->state = STATE_STOPPED;
+			tempPrev->nextSleeper->sleeptime = diffTicks;
+			tempPrev->nextSleeper->nextSleeper = NULL;
+			tempPrev->nextSleeper->state = STATE_STOPPED;
+			kprintf("tempNextVal:%d.",tempPrev->nextSleeper->sleeptime);
 			kprintf("+E+");
 			printSleepQueue();
 		}else if(temp != NULL){ //add to middle

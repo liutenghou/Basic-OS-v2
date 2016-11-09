@@ -1,25 +1,25 @@
-le.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.p
-OK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2
-.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.hea
-dNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNUL
-Lidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidl
-e.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pO
-K:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.
-headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.head
-NULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULL
-idle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle
-.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK
-:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.h
-eadNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headN
-ULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLi
-dle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.
-pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:
-2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.he
-adNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNU
-LLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLid
-le.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.p
-OK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2
-.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.hea
-dNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNUL
-Lidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidl
-e.pOK:2.headNULLidle.pOK:2.
+Max addr is 4194303 3fffff
+memory inited
+dispatcher inited
+context inited
+create inited
+RootPID = 1, P1PID = 3, ConPID:4, P2PID:5, P3PID:6, P4PID:7
+P:0
+frompid:3 - destpid:1 - msg:101
+send: dest cannot receive
+-message sent OK--message:0-C:0
+ P2--P3--P4-P:1
+frompid:3 - destpid:1 - msg:101
+-message send FAIL-senderonqueue:3-P:2
+frompid:3 - destpid:1 - msg:101
+-message send FAIL-senderonqueue:3-C:1
+P:3
+frompid:3 - destpid:1 - msg:101
+-message send FAIL-senderonqueue:3-C:2
+C:3
+P:4
+frompid:3 - destpid:1 - msg:101
+-message send FAIL-senderonqueue:3-C:4
++0+<S:10>-NXT-tempPrevVal:10.tempNextVal:6570168.+E+<S:5>-NXT-tempPrevVal:5.temp
+NextVal:6570168.+E+<S:7>-NXT-tempPrevVal:7.tempNextVal:6570168.+E+<S:15>-NXT-tem
+pPrevVal:15.tempNextVal:6570168.+E+<S:-12>ß

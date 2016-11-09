@@ -153,8 +153,8 @@ pcb* getIdleProcPCB(void);
 int getIdlePID(void);
 
 //3.7 syssleep
-extern unsigned int syssleep( unsigned int milliseconds );
-unsigned int sleep(unsigned int millisec);
+extern unsigned int syssleep( unsigned long milliseconds );
+unsigned int sleep(unsigned long millisec);
 void tick(void);
 pcb* getCurrentProcess(void); //helper function
 void printSleepQueue(void); //testing function

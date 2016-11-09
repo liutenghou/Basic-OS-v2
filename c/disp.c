@@ -103,8 +103,7 @@ void dispatch(void) {
 
 	kprintf("Out of processes: dying\n");
 
-	for (;;)
-		;
+	for (;;);
 }
 
 extern void dispatchinit(void) {

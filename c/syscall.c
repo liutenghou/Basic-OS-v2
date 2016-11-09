@@ -87,6 +87,6 @@ extern int sysrecv( unsigned int *from_pid, unsigned long * msg){
 //input: number of milliseconds to sleep system
 //output: 0 if slept for desired amount of time,
 //or amount of time there was still to sleep when unblocked
-extern unsigned int syssleep( unsigned int milliseconds ){
+extern unsigned int syssleep( unsigned long milliseconds ){
 	return syscall(SYS_SLEEP, milliseconds);
 }

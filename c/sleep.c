@@ -13,43 +13,62 @@ unsigned int sleep(unsigned int millisec){
 
 	pcb *currentProcess = getCurrentProcess();
 	pcb *temp = sleepers;
-	unsigned long ticks = millisec/10 + 1;
+	pcb *tempPrev = sleepers;
+	//TODO: uncomment this, after testing
+	//unsigned long ticks = millisec/10 + 1;
+	unsigned long ticks = millisec;
 	unsigned long diffTicks = ticks;
 	unsigned long prevTicks = ticks;
-	currentProcess->sleeptime = ticks;
 
-	//place current process in list of sleeping processes, delta list
-	if(temp == NULL){
-		sleepers = currentProcess; //easy, done
+	//place current process in list of sleeping processes
+	if(sleepers == NULL){ //initial
+		sleepers = currentProcess;
 		sleepers->state = STATE_STOPPED;
 		sleepers->nextSleeper = NULL;
 		sleepers->sleeptime = ticks;
-		kprintf("+AS");
+		kprintf("+0+");
+		printSleepQueue();
 	}else{
-		//find the sleeper the process is suppose to go after
-		while(temp->nextSleeper!=NULL){
+		//find the sleeper the process is suppose to go after or before
+		while(temp!=NULL){
 			prevTicks = diffTicks;
 			diffTicks = (diffTicks - temp->sleeptime);
+			kprintf("-NXT-");
 			if(diffTicks <= 0){
 				diffTicks = prevTicks;
 				break;
 			}
+			tempPrev = temp;
 			temp = temp->nextSleeper;
 		}
 
-		if(temp->nextSleeper == NULL){ //just add to end
-			temp->nextSleeper = currentProcess;
+
+		if(temp == sleepers){ //goes before everything
+
+			sleepers = currentProcess;
+			sleepers->nextSleeper = temp;
+			sleepers->sleeptime = diffTicks;
+			sleepers->state = STATE_STOPPED;
+			decrementTimes(sleepers->nextSleeper, diffTicks);
+			kprintf("+B+");
+			printSleepQueue();
+		}else if(temp == NULL){ //add to end
+			tempPrev->nextSleeper = currentProcess;
 			currentProcess->sleeptime = diffTicks;
 			currentProcess->nextSleeper = NULL;
 			currentProcess->state = STATE_STOPPED;
-			kprintf("+ZS");
-		}else{
-			currentProcess->nextSleeper = temp->nextSleeper;
-			temp->nextSleeper = currentProcess;
+			kprintf("+E+");
+			printSleepQueue();
+		}else if(temp != NULL){ //add to middle
+			currentProcess->nextSleeper = tempPrev->nextSleeper;
+			tempPrev->nextSleeper = currentProcess;
 			currentProcess->sleeptime = diffTicks;
 			currentProcess->state = STATE_STOPPED;
 			decrementTimes(currentProcess->nextSleeper, diffTicks);
-			kprintf("+MS");
+			kprintf("+M+");
+			printSleepQueue();
+		}else{
+			kprintf("SLEEP ERROR\n");
 		}
 	}
 
@@ -62,7 +81,7 @@ void decrementTimes(pcb *p, unsigned long t){
 	while(temp != NULL){
 		temp->sleeptime = temp->sleeptime-t;
 		if(temp->sleeptime < 0){
-			kprintf("ERROR IN decrementTime!\n");
+			kprintf("\nERROR IN decrementTime!\n");
 		}
 		temp = temp->nextSleeper;
 	}
@@ -82,7 +101,8 @@ void tick(void){
 void printSleepQueue(void){
 	pcb *temp = sleepers;
 	while(temp != NULL){
-		kprintf("S:temp->pid.");
+		kprintf("<S:%d>",temp->sleeptime);
+		temp=temp->nextSleeper;
 	}
 }
 

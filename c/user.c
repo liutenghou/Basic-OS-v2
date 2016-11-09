@@ -18,7 +18,7 @@ void producer(void) {
 	}
 	syssleep(10);
 	syssleep(15);
-	syssleep(12);
+	syssleep(12); //should go to M
 	syssleep(22);
 	syssleep(3);
 	sysstop();

@@ -157,6 +157,7 @@ extern unsigned int syssleep( unsigned int milliseconds );
 unsigned int sleep(unsigned int millisec);
 void tick(void);
 pcb* getCurrentProcess(void); //helper function
+void printSleepQueue(void); //testing function
 
 /* Function prototypes for system calls as called by the application */
 int syscreate(funcptr fp, size_t stack);

@@ -59,6 +59,6 @@ int send(int dest_pid, int msg){
 }
 
 //receive called by dispatcher upon sysreceive request
-int receive(){
+int recv(){
 	return 0;
 }

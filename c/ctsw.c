@@ -86,10 +86,17 @@ int contextswitch( pcb *p ) {
         : "%eax", "%ebx", "%edx"
     );
 
-    /* save esp and read in the arguments
-     */
+
+    //save esp and read in the arguments
     p->esp = saveESP; //of process
     p->args = args;
+    //make timer interrupt look like a syscall
+    //when timer interrupt occurs
+    p->ret = rc;
+    if(interruptType == 32){
+    	rc = SYS_TIMER;
+    }
+
     //kprintf("-INTType:%d-", interruptType);
     return rc;
 }

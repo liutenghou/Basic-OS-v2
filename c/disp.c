@@ -86,6 +86,7 @@ void dispatch(void) {
 			}
 			break;
 		case (SYS_TIMER):
+			tick();
 			ready(p);
 			p = next();
 			end_of_intr();
@@ -93,7 +94,7 @@ void dispatch(void) {
 		case(SYS_SLEEP):
 			ap = (va_list)p->args;
 			tosleeptime = va_arg(ap, unsigned int);
-
+			sleep(tosleeptime);
 			break;
 		default:
 			kprintf("Bad Sys request %d, pid = %d\n", r, p->pid);
@@ -157,8 +158,13 @@ void killprocess(int pid) {
 	}
 }
 
+//TODO: use this for all kernel calls
 int getCurrentPID(void) {
 	return p->pid;
+}
+
+pcb* getCurrentProcess(void){
+	return p;
 }
 
 pcb* getIdleProcPCB(void){

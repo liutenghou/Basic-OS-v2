@@ -78,6 +78,8 @@ struct struct_pcb {
 	pcb *sender;
 	pcb *nextSender;
 	long args;
+	unsigned long sleeptime; //counter for sleep on delta list
+	pcb *nextSleeper; //next process on sleep queue
 };
 
 /* The actual space is set aside in create.c */
@@ -140,7 +142,6 @@ extern int syskill(int pid);
 //3.3 IPC
 extern int syssend(int dest_pid, unsigned long msg);
 extern int sysrecv(unsigned int *from_pid, unsigned long *msg);
-extern int sysreceive(unsigned int *from_pid, unsigned long * msg);
 extern pcb* getProcessFromPID(int pid);
 
 void killprocess(int pid);
@@ -155,6 +156,7 @@ int getIdlePID(void);
 extern unsigned int syssleep( unsigned int milliseconds );
 unsigned int sleep(unsigned int millisec);
 void tick(void);
+pcb* getCurrentProcess(void); //helper function
 
 /* Function prototypes for system calls as called by the application */
 int syscreate(funcptr fp, size_t stack);

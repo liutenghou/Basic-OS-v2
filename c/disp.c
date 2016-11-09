@@ -56,7 +56,7 @@ void dispatch(void) {
 			break;
 			//cases for A2
 		case (SYS_GETPID):
-			p->ret = p->pid; //TODO: why doesn't this work?
+			p->ret = p->pid;
 			break;
 		case (SYS_PUTS):
 			ap = (va_list) p->args;
@@ -86,6 +86,8 @@ void dispatch(void) {
 				ready(p);
 				ready(getProcessFromPID(toPID));
 			}
+			break;
+		case (SYS_RECV):
 			break;
 		case (SYS_TIMER):
 			ready(p);

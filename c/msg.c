@@ -70,7 +70,7 @@ int receive(pcb* this_process, int* srcPID, void* buffer, int len){
 	if (*srcPID == 0) {
 		if (this_process->msg_queue != NULL) {
 			kprintf("The send queue is not empty!");
-			*buffer = this_process->msg_queue->msg;
+			src_process = this_process->msg_queue;
 		}
 		kprintf("No matching pid");
 		return -1;
@@ -79,12 +79,12 @@ int receive(pcb* this_process, int* srcPID, void* buffer, int len){
 	// if recv() is called before matching send, the receiving process is blocked
 	// until matching send occurs
 	if (*srcPID != 0) {
-		*src_process = getProcessFromPID(*srcPID);
+		src_process->pid = *srcPID;
 		kprintf("receiving from %d to %d\n", *srcPID, this_process->pid);
 	}
 
 	// there is no matching pid
-	if (scr_process == -1) {
+	if (*srcPID == -1) {
 		return -1;
 	}
 
@@ -115,7 +115,7 @@ int receive(pcb* this_process, int* srcPID, void* buffer, int len){
 		// bcopy from xeros kernel header file
 		// copy data
 		//void bcopy(const void *src, void *dest, unsigned int n);
-		bcopy(*buf, src_process->buf->addr, buff_limit);
+		bcopy(src_process->buf, buffer, src_process->msg);
 
 		// unblock sending process
 		ready(src_process);

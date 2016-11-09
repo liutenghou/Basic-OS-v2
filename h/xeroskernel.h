@@ -88,7 +88,6 @@ struct struct_pcb {
 	int msg; //received message from another process
 	pcb *sender;
 	pcb *nextSender;
-	long args;
 };
 
 /* The actual space is set aside in create.c */

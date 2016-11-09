@@ -7,13 +7,18 @@
 
 /* Your code goes here */
 
+static int global_ticker;
+
 // add process to sleep queue
 void sleep(struct pcb* process, unsigned int milliseconds) {
 	return;
 }
 
 void tick() {
-	return;
+	kprintf("ticker= %d\n", global_ticker);
+	global_ticker++;
+
+	
 }
 
 

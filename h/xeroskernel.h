@@ -136,10 +136,12 @@ int syscall(int call, ...); /* Used in the system call stub */
 #define SYS_SEND 	37
 #define SYS_RECV	38
 #define SYS_TIMER	39
+#define SYS_SLEEP       40
 
 extern int sysgetpid(void);
 extern void sysputs(char *str);
 extern int syskill(int pid);
+extern unsigned int syssleep(unsigned int milliseconds);
 
 //3.3 IPC
 extern int syssend(int dest_pid, unsigned long msg);
@@ -171,6 +173,9 @@ void sysstop(void);
 void root(void);
 void set_evec(unsigned int xnum, unsigned long handler);
 
-/* Anything you add must be between the #define and this comment */
+/* Anything you add must be between the #
+
+
+ and this comment */
 #endif
 

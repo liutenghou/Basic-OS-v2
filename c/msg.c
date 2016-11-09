@@ -104,7 +104,7 @@ int receive(struct pcb* this_process, int* srcPID, void* buffer, int len){
 	}
 
 
-	if (src_process->state == SEND_BLOCKED && src_process->buffer->ipc_pid == this_process->pid && *srcPID != 0){
+	if (src_process->state == SEND_BLOCKED && src_process->buffer.ipc_pid == this_process->pid && *srcPID != 0){
 
 		// there is a match found, so proceed with the data transfer
 		if (src_process->buffer->size > len) {
@@ -113,17 +113,13 @@ int receive(struct pcb* this_process, int* srcPID, void* buffer, int len){
 			buff_limit = src_process->buffer->size;
 		}
 
-		// do i do "." or "->"
 		// bcopy from xeros kernel header file
 		// copy data
 		bcopy(buffer, src_process->buffer->addr, buff_limit);
 
-		// need to create code for debug??
-
 		// unblock sending process
 		ready(src_process);
 		// then return received bytes indiciating the receiving process received something
-		// or should receive the buffer limit if i am following the slides cause i return the length
 		return buff_limit;
 
 	 } else {
@@ -137,6 +133,7 @@ int receive(struct pcb* this_process, int* srcPID, void* buffer, int len){
 
 	// source process not yet sending
 	return -3
+}
 }
 
 

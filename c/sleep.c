@@ -6,3 +6,14 @@
 #include <xeroslib.h>
 
 /* Your code goes here */
+
+// add process to sleep queue
+void sleep(struct pcb* process, unsigned int milliseconds) {
+	return;
+}
+
+void tick() {
+	return;
+}
+
+

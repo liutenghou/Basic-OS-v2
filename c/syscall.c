@@ -88,6 +88,7 @@ extern int sysrecv(unsigned int *from_pid, unsigned long *msg){
 }
 
 extern unsigned int syssleep(unsigned int milliseconds) {
-    return 0;
+    // syssleep returns 0 if if call was blocked for amount of time requested, otherwise it is the amount of time the process still had to sleep at the time it was unblocked?!?!?!? whattt????
+    return (syscall(SYS_SLEEP, milliseconds));
 }
 

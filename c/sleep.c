@@ -12,10 +12,13 @@ pcb* sleepers = NULL; //is a delta list
 /*
 
 NOTE: this does NOT handle the case where the same process
-is added on the queue multiple times
+is added on the queue multiple times.
+TODO: return error if process already on sleepqueue
 
  */
 unsigned int sleep(unsigned long millisec){
+
+	//TODO: handle weird input (neg num, out of bounds)
 
 	pcb *currentProcess = getCurrentProcess();
 	kprintf("currentPID:%d.", currentProcess->pid);
@@ -24,10 +27,8 @@ unsigned int sleep(unsigned long millisec){
 	//TODO: uncomment this, after testing
 	//unsigned long ticks = millisec/10 + 1;
 	unsigned long ticks = millisec;
-	unsigned long diffTicks = ticks;
+	long diffTicks = ticks;
 	unsigned long prevTicks = ticks;
-
-
 
 	//place current process in list of sleeping processes
 	if(sleepers == NULL){ //initial
@@ -39,20 +40,21 @@ unsigned int sleep(unsigned long millisec){
 		printSleepQueue();
 	}else{
 		//find the sleeper the process is suppose to go after or before
+		tempPrev = temp;
 		while(temp!=NULL){
-			tempPrev = temp;
+
 			prevTicks = diffTicks;
 			diffTicks = (diffTicks - temp->sleeptime);
-			kprintf("-NXT-");
+			kprintf("-NXT-DT:%d.PT:%d.", prevTicks, diffTicks);
 			if(diffTicks <= 0){
 				diffTicks = prevTicks;
-				kprintf("diffTicks:%d.", diffTicks);
+				kprintf("diffTicks:%d.tempPrevTicks:%d ", diffTicks, tempPrev->sleeptime);
 				break;
 			}
-
+			tempPrev = temp;
 			temp = temp->nextSleeper;
 		}
-		kprintf("tempPrevST:%d.CP:%d.dt:%d.", tempPrev->sleeptime, currentProcess->pid, diffTicks);
+		kprintf("\ntempPrevST:%d.CP:%d.dt:%d\n", tempPrev->sleeptime, currentProcess->pid, diffTicks);
 
 		if(temp == sleepers){ //add to beginning
 			sleepers = currentProcess;
@@ -63,16 +65,17 @@ unsigned int sleep(unsigned long millisec){
 			kprintf("+B+");
 			printSleepQueue();
 		}else if(temp == NULL){ //add to end
-			kprintf("tempPrevVal:%d.",tempPrev->sleeptime);
+			//kprintf("tempPrevVal:%d.",tempPrev->sleeptime);
 
 			tempPrev->nextSleeper = currentProcess;
 			tempPrev->nextSleeper->sleeptime = diffTicks;
 			tempPrev->nextSleeper->nextSleeper = NULL;
 			tempPrev->nextSleeper->state = STATE_STOPPED;
-			kprintf("tempNextVal:%d.",tempPrev->nextSleeper->sleeptime);
+			//kprintf("tempNextVal:%d.",tempPrev->nextSleeper->sleeptime);
 			kprintf("+E+");
 			printSleepQueue();
 		}else if(temp != NULL){ //add to middle
+			kprintf("NEXTSLEEPER:%d ", tempPrev->nextSleeper->sleeptime);
 			currentProcess->nextSleeper = tempPrev->nextSleeper;
 			tempPrev->nextSleeper = currentProcess;
 			currentProcess->sleeptime = diffTicks;
@@ -88,13 +91,16 @@ unsigned int sleep(unsigned long millisec){
 	return 0;
 }
 
-//decrement all sleeptimes in p sleep queue by input amount
+//decrement all sleeptimes from p in sleep queue by input amount
+//NOTE: if value in middle of list becomes negative, set to 0
+//too much work to reshuffle.
 void decrementTimes(pcb *p, unsigned long t){
 	pcb *temp = p;
 	while(temp != NULL){
 		temp->sleeptime = temp->sleeptime-t;
 		if(temp->sleeptime < 0){
-			kprintf("\nERROR IN decrementTime!\n");
+			temp->sleeptime = 0;
+			kprintf("\nNEGATIVE IN decrementTime!\n");
 		}
 		temp = temp->nextSleeper;
 	}

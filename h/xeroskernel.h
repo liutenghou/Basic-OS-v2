@@ -139,7 +139,7 @@ int syscall(int call, ...); /* Used in the system call stub */
 #define SYS_PUTS 	35
 #define SYS_KILL 	36
 #define SYS_SEND 	37
-#define SYS_RECV	38
+#define SYS_RECEIVE	38
 #define SYS_TIMER	39
 #define SYS_SLEEP       40
 

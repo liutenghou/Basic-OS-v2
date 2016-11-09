@@ -23,6 +23,12 @@ void dispatch(void) {
 	int toPID;
 	int msg;
 	
+	int *srcPID;
+	int len;
+	void *buffer;
+	
+	
+	
 	for (p = next(); p;) {
 		//      kprintf("Process %x selected stck %x\n", p, p->esp);
 		if(p == NULL){
@@ -87,7 +93,18 @@ void dispatch(void) {
 				ready(getProcessFromPID(toPID));
 			}
 			break;
-		case (SYS_RECV):
+		case (SYS_RECEIVE):
+			ap = (va_list) p->args;
+			//int receive(int* srcPID, void* buffer, int len)
+			*srcPID = va_arg(ap, int);
+			buffer = va_arg(ap, void);
+			len = va_arg(ap, int);			
+			p->ret = receive(*srcPID, *buffer, len);
+			
+			if (p->state == RECV_BLOCKED) {
+			kprintf("message has not been received");
+			}
+					
 			break;
 		case (SYS_TIMER):
 			ready(p);

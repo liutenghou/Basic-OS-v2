@@ -61,8 +61,9 @@ int send(int dest_pid, int msg){
 // kernel side: receives call by dispatcher upon sysreceive request from user process
 // arguments: srcPID: source proess pid, buffer: msg copied from sender into buffer, len: message length
 // return: returns length 
-int receive(pcb* this_process, int* srcPID, void* buffer, int len){
+int receive(int* srcPID, void* buffer, int len){
 	
+	pcb *this_process;
 	pcb *src_process;
 	int buff_limit;
 
@@ -101,7 +102,6 @@ int receive(pcb* this_process, int* srcPID, void* buffer, int len){
 			}
 		}
 	}
-
 
 	if (src_process->state == SEND_BLOCKED && src_process->buf->ipc_pid == this_process->pid && *srcPID != 0){
 

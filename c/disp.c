@@ -23,7 +23,7 @@ void dispatch(void) {
 	int toPID;
 	unsigned long msg;
 	
-	int *srcPID;
+	int srcPID;
 	unsigned long *msgP;
 	
 	unsigned int tosleeptime;
@@ -95,12 +95,13 @@ void dispatch(void) {
 		case (SYS_RECEIVE):
 			ap = (va_list) p->args;
 			//int receive(int* srcPID, void* buffer, int len)
-			srcPID = (int *)va_arg(ap, int*);
-			msgP = (unsigned long*)va_arg(ap, unsigned long *);	
+			srcPID = va_arg(ap, int);
+			msgP = (unsigned long*) va_arg(ap, unsigned long *);	
 			p->ret = receive(srcPID, msgP);
 			
 			if (p->state == STATE_BLOCKED) {
 				kprintf("message has not been received");
+				
 			}
 					
 			break;

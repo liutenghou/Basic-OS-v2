@@ -64,7 +64,7 @@ void initproc(void) /* The beginning */
 void idleproc(void) {
 	int i;
 	for(i=1; i;){
-		kprintf("idle.");
+		//kprintf("idle.");
 		sysyield();
 	}
 	sysstop();

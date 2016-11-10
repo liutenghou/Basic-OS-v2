@@ -26,21 +26,21 @@ void dispatch(void) {
 	int *srcPID;
 	unsigned long *msgP;
 	
-	
-	
+	unsigned int tosleeptime;
+
 	for (p = next(); p;) {
 		//      kprintf("Process %x selected stck %x\n", p, p->esp);
 		if(p == NULL){
-			kprintf("pNULL");
+//			kprintf("pNULL");
 			p = getIdleProcPCB();
 		}else{
-			kprintf("pOK:%d.", p->pid);
+//			kprintf("pOK:%d.", p->pid);
 		}
-		if(head == NULL){
-			kprintf("headNULL");
-		}else{
-			kprintf("headOK:%d,", head->pid);
-		}
+//		if(head == NULL){
+//			kprintf("headNULL");
+//		}else{
+//			kprintf("headOK:%d,", head->pid);
+//		}
 
 		r = contextswitch(p);
 		switch (r) {
@@ -105,9 +105,16 @@ void dispatch(void) {
 					
 			break;
 		case (SYS_TIMER):
+			tick();
 			ready(p);
 			p = next();
 			end_of_intr();
+			break;
+		case(SYS_SLEEP):
+			ap = (va_list)p->args;
+			tosleeptime = va_arg(ap, unsigned int);
+			sleep(tosleeptime);
+			//p = next(); //need to get the next process, current process stopped
 			break;
 		default:
 			kprintf("Bad Sys request %d, pid = %d\n", r, p->pid);
@@ -116,8 +123,7 @@ void dispatch(void) {
 
 	kprintf("Out of processes: dying\n");
 
-	for (;;)
-		;
+	for (;;);
 }
 
 extern void dispatchinit(void) {
@@ -171,8 +177,13 @@ void killprocess(int pid) {
 	}
 }
 
+//TODO: use this for all kernel calls
 int getCurrentPID(void) {
 	return p->pid;
+}
+
+pcb* getCurrentProcess(void){
+	return p;
 }
 
 pcb* getIdleProcPCB(void){

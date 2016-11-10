@@ -89,6 +89,9 @@ struct struct_pcb {
 	long args;
 	pcb *sender;
 	pcb *nextSender;
+	//NOTE: in order to check negative value errors, this must be signed
+	long sleeptime; //counter for sleep on delta list
+	pcb *nextSleeper; //next process on sleep queue
 };
 
 /* The actual space is set aside in create.c */
@@ -142,16 +145,16 @@ int syscall(int call, ...); /* Used in the system call stub */
 #define SYS_SEND 	37
 #define SYS_RECEIVE	38
 #define SYS_TIMER	39
-#define SYS_SLEEP       40
+#define SYS_SLEEP 	40
+#define SYS_RECV	41
 
 extern int sysgetpid(void);
 extern void sysputs(char *str);
 extern int syskill(int pid);
-extern unsigned int syssleep(unsigned int milliseconds);
 
 //3.3 IPC
 extern int syssend(int dest_pid, unsigned long msg);
-extern int sysrecv( unsigned int *from_pid, void *buffer, int len);
+extern int sysrecv(unsigned int *from_pid, unsigned long *msg);
 extern pcb* getProcessFromPID(int pid);
 
 
@@ -162,6 +165,13 @@ int getCurrentPID(void);
 extern void idleproc(void);
 pcb* getIdleProcPCB(void);
 int getIdlePID(void);
+
+//3.7 syssleep
+extern unsigned int syssleep( unsigned long milliseconds );
+unsigned int sleep(unsigned long millisec);
+void tick(void);
+pcb* getCurrentProcess(void); //helper function
+void printSleepQueue(void); //testing function
 
 /* Function prototypes for system calls as called by the application */
 int syscreate(funcptr fp, size_t stack);

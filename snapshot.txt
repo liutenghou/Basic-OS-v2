@@ -1,25 +1,25 @@
-le.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.p
-OK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2
-.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.hea
-dNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNUL
-Lidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidl
-e.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pO
-K:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.
-headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.head
-NULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULL
-idle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle
-.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK
-:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.h
-eadNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headN
-ULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLi
-dle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.
-pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:
-2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.he
-adNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNU
-LLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLid
-le.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.p
-OK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2
-.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.hea
-dNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNUL
-Lidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidle.pOK:2.headNULLidl
-e.pOK:2.headNULLidle.pOK:2.
+Booting from Floppy...
+
+Loading........
+
+
+CPSC 415, 2016W1
+32 Bit Xeros 0.01
+Located at: 0 to 6440
+Max addr is 4194303 3fffff
+memory inited
+dispatcher inited
+context inited
+create inited
+RootPID = 1, P1PID = -1330597712, ConPID:-1330597712, P2PID:3, P3PID:4, P4PID:5
+, P5PID:6, P6PID:7.-P2-
+ADD:10
++0+<S:10>-P3-
+ADD:15
++E+<S:10><S:5>-P5-
+ADD:22
++E+<S:10><S:5><S:7>-P6-
+ADD:3
++B+<S:3><S:7><S:2><S:4>-P4-
+ADD:12
++M+<S:3><S:7><S:2><S:0><S:2>ß

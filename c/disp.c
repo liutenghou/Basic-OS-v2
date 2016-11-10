@@ -65,7 +65,7 @@ void dispatch(void) {
 			break;
 		case (SYS_PUTS):
 			ap = (va_list) p->args;
-			kprintf("%s", va_arg(ap, char *));
+			//kprintf("%s", va_arg(ap, char *));
 			break;
 		case (SYS_KILL):
 			ap = (va_list) p->args;

@@ -3,92 +3,97 @@
 
 #include <xeroskernel.h>
 
-/* Your code goes here */
-void producer(void) {
+int root_pid;
+
+void process1(void) {
 	/****************************/
+	unsigned int senderpid = 0; //need this to get the sender_pid
+	unsigned int msg = 0;
+	kprintf("Process:%d alive\n", sysgetpid());
+	syssleep(5000);
 
-	int i;
+	sysrecv(&senderpid, &msg);
+	//receive from root process
 
-	for (i = 0; i < 5; i++) {
-		kprintf("P:%d\n", i);
+	//prints a message that msg received, how long left to sleep
 
-		sysyield();
-	}
+	kprintf("Process:%d sleep done, exit\n", sysgetpid());
 	sysstop();
 }
 
-void consumer(void) {
+void process2(void) {
 	/****************************/
 
-	int i;
+	unsigned int senderpid = 0; //need this to get the sender_pid
+	unsigned int msg = 0;
+	kprintf("Process:%d alive\n", sysgetpid());
+	syssleep(5000);
+	//receive from root process
 
-	for (i = 0; i < 5; i++) {
-		//sysputs("consume\n");
-		kprintf("C:%d\n", i);
-		sysyield();
-	}
+	//prints a message that msg received, how long left to sleep
 
+	kprintf("Process:%d sleep done, exit\n", sysgetpid());
 	sysstop();
 }
 
-void producer2(void) {
+void process3(void) {
 	/****************************/
 
-	
-	syssleep(1000);
-	kprintf("-P2:");
+	unsigned int senderpid = 0; //need this to get the sender_pid
+	unsigned int msg = 0;
+	kprintf("Process:%d alive\n", sysgetpid());
+	syssleep(5000);
+	//receive from root process
+
+	//prints a message that msg received, how long left to sleep
+
+	kprintf("Process:%d sleep done, exit\n", sysgetpid());
 	sysstop();
 }
 
-void producer3(void) {
+void process4(void) {
 	/****************************/
-	
-	syssleep(15000);
-	kprintf("-P3:");
-	sysstop();
-}
+	unsigned int senderpid = 0; //need this to get the sender_pid
+	unsigned int msg = 0;
+	kprintf("Process:%d alive\n", sysgetpid());
+	syssleep(5000);
+	//receive from root process
 
-void producer4(void) {
-	/****************************/
-	
-	syssleep(1200);
-	kprintf("-P4:");
-	sysstop();
-}
+	//prints a message that msg received, how long left to sleep
 
-void producer5(void) {
-	/****************************/
-	
-	syssleep(2200);
-	kprintf("-P5:");
-	sysstop();
-}
-void producer6(void) {
-	/****************************/
-	
-	syssleep(30000);
-	kprintf("-P6:");
+	kprintf("Process:%d sleep done, exit\n", sysgetpid());
 	sysstop();
 }
 
 void root(void) {
 	/****************************/
-	int proc_pid, con_pid, root_pid, proc_pid2, proc_pid3, proc_pid4, proc_pid5, proc_pid6;
+	int proc_pid1, proc_pid2, proc_pid3, proc_pid4;
 	root_pid = sysgetpid();
+	char *str;
 
-	//why 2 yields here?
-//	sysyield();
-//	sysyield();
-//	proc_pid = syscreate(&producer, 4096);
-//	con_pid = syscreate(&consumer, 4096);
-	proc_pid2 = syscreate(&producer2, 4096);
-	proc_pid3 = syscreate(&producer3, 4096);
-	proc_pid4 = syscreate(&producer4, 4096);
-	proc_pid5 = syscreate(&producer5, 4096);
-	proc_pid6 = syscreate(&producer6, 4096);
-	kprintf(
-			"RootPID = %d, P1PID = %d, ConPID:%d, P2PID:%d, P3PID:%d, P4PID:%d\n, P5PID:%d, P6PID:%d.",
-			root_pid, proc_pid, con_pid, proc_pid2, proc_pid3, proc_pid4, proc_pid5, proc_pid6);
+	proc_pid1 = syscreate(&process1, 4096);
+	proc_pid2 = syscreate(&process2, 4096);
+	proc_pid3 = syscreate(&process3, 4096);
+	proc_pid4 = syscreate(&process4, 4096);
+
+	kprintf("RootPID:%d, P1PID:%d, P2PID:%d, P3PID:%d, P4PID:%d\n", root_pid,
+			proc_pid1, proc_pid2, proc_pid3, proc_pid4);
+
+	kprintf("Process:%d alive\n", root_pid);
+
+	int j;
+	for (j = 0; j < 1000; j++) {
+		sysyield();
+	}
+
+//	syssend(2, 1000);
+//	syssend(3, 2000);
+//	syssend(4, 3000);
+//	syssend(5, 4000);
+
+	syssleep(9000);
+	sysputs("back at kernel");
+
 	int i;
 	for (i = 0; i;) {
 		sysyield();

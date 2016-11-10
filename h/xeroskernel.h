@@ -80,8 +80,10 @@ struct struct_pcb {
 	/* call                                    */
 	unsigned long msg; //received message from another process
 	long args;
-	pcb *sender; // queue of senders
-	pcb *nextSender; // first sender of queue of senders 
+	pcb *sender;
+	pcb *nextSender;
+	pcb *receiver;
+	pcb *nextReceiver;
 	//NOTE: in order to check negative value errors, this must be signed
 	long sleeptime; //counter for sleep on delta list
 	pcb *nextSleeper; //next process on sleep queue

@@ -99,9 +99,9 @@ int receive(int sender_pid, unsigned long *msg){
 	}
 
 	// receiving process cannot send to itself
-	if (receiving_process->pid == sending_process->pid) {
-		return -2;
-	}
+	// if (receiving_process->pid == sending_process->pid) {
+	// 	return -2;
+	// }
 
 	// if matching send has occurred (which implies sending process is blocked), the message is copied into the receive buffer
 	// and both processes are placed on the ready queue

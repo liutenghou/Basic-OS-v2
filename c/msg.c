@@ -121,8 +121,8 @@ int receive(int sender_pid, unsigned long *msg){
 		kprintf("no senders\n");
 		return -1;
 	}
-
-
+	
+	return 0;
 }
 
 

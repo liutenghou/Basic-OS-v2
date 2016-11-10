@@ -95,6 +95,7 @@ void dispatch(void) {
 			ap = (va_list)p->args;
 			tosleeptime = va_arg(ap, unsigned int);
 			sleep(tosleeptime);
+			//p = next(); //need to get the next process, current process stopped
 			break;
 		default:
 			kprintf("Bad Sys request %d, pid = %d\n", r, p->pid);

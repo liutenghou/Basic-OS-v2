@@ -1,25 +1,25 @@
+Booting from Floppy...
+
+Loading........
+
+
+CPSC 415, 2016W1
+32 Bit Xeros 0.01
+Located at: 0 to 6440
+Max addr is 4194303 3fffff
+memory inited
+dispatcher inited
 context inited
 create inited
-RootPID = 1, P1PID = 3, ConPID:4, P2PID:5, P3PID:6, P4PID:7
-, P5PID:8, P6PID:9.P:0
-C:0
--P2-currentPID:5.+0+<S:10>-P3-currentPID:6.-NXT-DT:15.PT:5.
-tempPrevST:10.CP:6.dt:5
-+E+<S:10><S:5>-P4-currentPID:7.-NXT-DT:12.PT:2.-NXT-DT:2.PT:-3.diffTicks:2.tempP
-revTicks:10
-tempPrevST:10.CP:7.dt:2
-NEXTSLEEPER:5 +M+<S:10><S:2><S:3>-P5-currentPID:8.-NXT-DT:22.PT:12.-NXT-DT:12.PT
-:10.-NXT-DT:10.PT:7.
-tempPrevST:3.CP:8.dt:7
-+E+<S:10><S:2><S:3><S:7>-P6-currentPID:9.-NXT-DT:3.PT:-7.diffTicks:3.tempPrevTic
-ks:10
-tempPrevST:10.CP:9.dt:3
-+B+<S:3><S:7><S:-1><S:0><S:4>P:1
-C:1
-P:2
-C:2
-P:3
-C:3
-P:4
-C:4
-ß
+RootPID = 1, P1PID = -1330597712, ConPID:-1330597712, P2PID:3, P3PID:4, P4PID:5
+, P5PID:6, P6PID:7.-P2-
+ADD:10
++0+<S:10>-P3-
+ADD:15
++E+<S:10><S:5>-P5-
+ADD:22
++E+<S:10><S:5><S:7>-P6-
+ADD:3
++B+<S:3><S:7><S:2><S:4>-P4-
+ADD:12
++M+<S:3><S:7><S:2><S:0><S:2>ß

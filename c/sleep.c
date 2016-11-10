@@ -19,14 +19,14 @@ TODO: return error if process already on sleepqueue
 unsigned int sleep(unsigned long millisec){
 
 	//TODO: handle weird input (neg num, out of bounds)
-
 	pcb *currentProcess = getCurrentProcess();
-	kprintf("currentPID:%d.", currentProcess->pid);
+	//kprintf("\nmillisec:%d", millisec);
 	pcb *temp = sleepers;
 	pcb *tempPrev = sleepers;
-	//TODO: uncomment this, after testing
-	//unsigned long ticks = millisec/10 + 1;
+	//unsigned long ticks = millisec/10 + (millisec%10)?(1):(0);
 	unsigned long ticks = millisec;
+	unsigned long tick = millisec;
+	kprintf("\nticks:%d\n", millisec);
 	long diffTicks = ticks;
 	unsigned long prevTicks = ticks;
 
@@ -45,16 +45,16 @@ unsigned int sleep(unsigned long millisec){
 
 			prevTicks = diffTicks;
 			diffTicks = (diffTicks - temp->sleeptime);
-			kprintf("-NXT-DT:%d.PT:%d.", prevTicks, diffTicks);
+			//kprintf("-NXT-DT:%d.PT:%d.", prevTicks, diffTicks);
 			if(diffTicks <= 0){
 				diffTicks = prevTicks;
-				kprintf("diffTicks:%d.tempPrevTicks:%d ", diffTicks, tempPrev->sleeptime);
+				//kprintf("diffTicks:%d.tempPrevTicks:%d ", diffTicks, tempPrev->sleeptime);
 				break;
 			}
 			tempPrev = temp;
 			temp = temp->nextSleeper;
 		}
-		kprintf("\ntempPrevST:%d.CP:%d.dt:%d\n", tempPrev->sleeptime, currentProcess->pid, diffTicks);
+		//kprintf("\ntempPrevST:%d.CP:%d.dt:%d\n", tempPrev->sleeptime, currentProcess->pid, diffTicks);
 
 		if(temp == sleepers){ //add to beginning
 			sleepers = currentProcess;
@@ -75,7 +75,7 @@ unsigned int sleep(unsigned long millisec){
 			kprintf("+E+");
 			printSleepQueue();
 		}else if(temp != NULL){ //add to middle
-			kprintf("NEXTSLEEPER:%d ", tempPrev->nextSleeper->sleeptime);
+			//kprintf("NEXTSLEEPER:%d ", tempPrev->nextSleeper->sleeptime);
 			currentProcess->nextSleeper = tempPrev->nextSleeper;
 			tempPrev->nextSleeper = currentProcess;
 			currentProcess->sleeptime = diffTicks;
@@ -100,11 +100,12 @@ void decrementTimes(pcb *p, unsigned long t){
 		temp->sleeptime = temp->sleeptime-t;
 		if(temp->sleeptime < 0){
 			temp->sleeptime = 0;
-			kprintf("\nNEGATIVE IN decrementTime!\n");
+			//kprintf("NEGATIVE IN decrementTime");
 		}
 		temp = temp->nextSleeper;
 	}
 }
+
 /*
 every tick decrements head of delta list
 notifies sleep device that another time slice has occurred

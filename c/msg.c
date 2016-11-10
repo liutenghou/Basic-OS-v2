@@ -61,11 +61,11 @@ int send(int dest_pid, int msg){
 // kernel side: receives call by dispatcher upon sysreceive request from user process
 // arguments: srcPID: source proess pid, buffer: msg copied from sender into buffer, len: message length
 // return: returns length 
-int receive(int* srcPID, void* buffer, int len){
+int receive(int *srcPID, unsigned long *msg){
 	
 	pcb *this_process;
 	pcb *src_process;
-	int buff_limit;
+	int buff_limit = sizeof(unsigned long);
 
 	// can receive from any process 
 	if (*srcPID == 0) {
@@ -105,17 +105,10 @@ int receive(int* srcPID, void* buffer, int len){
 
 	if (src_process->state == SEND_BLOCKED && src_process->buf->ipc_pid == this_process->pid && *srcPID != 0){
 
-		// there is a match found, so proceed with the data transfer
-		if (src_process->buf->size > len) {
-			buff_limit = len;
-		} else {
-			buff_limit = src_process->buf->size;
-		}
-
 		// bcopy from xeros kernel header file
 		// copy data
 		//void bcopy(const void *src, void *dest, unsigned int n);
-		bcopy(src_process->buf, buffer, src_process->msg);
+		//bcopy(src_process->buf, buffer, src_process->msg);
 
 		// unblock sending process
 		ready(src_process);
@@ -127,8 +120,8 @@ int receive(int* srcPID, void* buffer, int len){
 		this_process->buf->ipc_pid = -1;
 	}
 
-	this_process->buf->addr = buffer;
-	this_process->buf->size = len;
+	//this_process->buf->addr = buffer;
+	//this_process->buf->size = len;
 	this_process->state = RECV_BLOCKED;
 
 	// source process not yet sending

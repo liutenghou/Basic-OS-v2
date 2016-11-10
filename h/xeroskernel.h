@@ -85,7 +85,8 @@ struct struct_pcb {
 	/* call                                    */
 	buf* buf; // buffer for receive to put msg in
 	pcb* msg_queue; // queue of senders
-	int msg; //received message from another process
+	unsigned long msg; //received message from another process
+	long args;
 	pcb *sender;
 	pcb *nextSender;
 };
@@ -150,8 +151,7 @@ extern unsigned int syssleep(unsigned int milliseconds);
 
 //3.3 IPC
 extern int syssend(int dest_pid, unsigned long msg);
-extern int sysrecv(unsigned int *from_pid, unsigned long *msg);
-extern int sysreceive(unsigned int *from_pid, unsigned long * msg);
+extern int sysrecv( unsigned int *from_pid, void *buffer, int len);
 extern pcb* getProcessFromPID(int pid);
 
 

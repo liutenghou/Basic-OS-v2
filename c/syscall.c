@@ -78,11 +78,14 @@ extern int syskill(int pid){
 extern int syssend(int dest_pid, unsigned long msg){
 	return syscall(SYS_SEND, dest_pid, msg);
 }
-
+/*
 extern int sysreceive( unsigned int *from_pid, unsigned long * msg){
 	return syscall(SYS_RECEIVE, msg);
 }
-
+*/
+extern int sysrecv( unsigned int *from_pid, void *buffer, int len){
+	return syscall(SYS_RECEIVE, from_pid, buffer, len);
+}
 
 extern unsigned int syssleep(unsigned int milliseconds) {
     return (syscall(SYS_SLEEP, milliseconds));

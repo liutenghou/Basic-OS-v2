@@ -21,11 +21,10 @@ void dispatch(void) {
 	va_list ap;
 	char *s;
 	int toPID;
-	int msg;
+	unsigned long msg;
 	
 	int *srcPID;
-	int len;
-	void *buffer;
+	unsigned long *msgP;
 	
 	
 	
@@ -96,13 +95,12 @@ void dispatch(void) {
 		case (SYS_RECEIVE):
 			ap = (va_list) p->args;
 			//int receive(int* srcPID, void* buffer, int len)
-			*srcPID = va_arg(ap, int);
-			buffer = va_arg(ap, void);
-			len = va_arg(ap, int);			
-			p->ret = receive(*srcPID, *buffer, len);
+			srcPID = (int *)va_arg(ap, int*);
+			msgP = (unsigned long*)va_arg(ap, unsigned long *);	
+			p->ret = receive(srcPID, msgP);
 			
-			if (p->state == RECV_BLOCKED) {
-			kprintf("message has not been received");
+			if (p->state == STATE_BLOCKED) {
+				kprintf("message has not been received");
 			}
 					
 			break;
@@ -183,7 +181,6 @@ pcb* getIdleProcPCB(void){
 
 
 extern pcb* getProcessFromPID(int pid){
-	pcb *p;
 	int i;
 	for(i=0; i<MAX_PROC; i++){
 		if(proctab[i].pid == pid){

@@ -76,7 +76,7 @@ int receive(int sender_pid, unsigned long *msg){
 	if (sender_pid == 0) {
 		if (receiving_process->nextSender != NULL) {
 			kprintf("The send queue is not empty!");
-			*msg = receiving_process->msg;
+			msg = receiving_process->msg;
 		}
 		kprintf("No matching pid");
 		return -1;

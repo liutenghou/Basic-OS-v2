@@ -28,7 +28,6 @@ unsigned int sleep(unsigned long millisec){
 	millisec = millisec/10;
 	unsigned long ticks = millisec;
 	unsigned long tick = millisec;
-	kprintf("\nticks:%d\n", millisec);
 	long diffTicks = ticks;
 	unsigned long prevTicks = ticks;
 
@@ -39,7 +38,7 @@ unsigned int sleep(unsigned long millisec){
 		sleepers->next = NULL;
 		sleepers->sleeptime = ticks;
 		kprintf("+0+");
-		printSleepQueue();
+		//printSleepQueue();
 	}else{
 		//find the sleeper the process is suppose to go after or before
 		tempPrev = temp;
@@ -65,7 +64,7 @@ unsigned int sleep(unsigned long millisec){
 			sleepers->state = STATE_STOPPED;
 			decrementTimes(sleepers->next, diffTicks);
 			kprintf("+B+");
-			printSleepQueue();
+			//printSleepQueue();
 		}else if(temp == NULL){ //add to end
 			//kprintf("tempPrevVal:%d.",tempPrev->sleeptime);
 
@@ -75,7 +74,7 @@ unsigned int sleep(unsigned long millisec){
 			tempPrev->next->state = STATE_STOPPED;
 			//kprintf("tempNextVal:%d.",tempPrev->next->sleeptime);
 			kprintf("+E+");
-			printSleepQueue();
+			//printSleepQueue();
 		}else if(temp != NULL){ //add to middle
 			//kprintf("next:%d ", tempPrev->next->sleeptime);
 			currentProcess->next = tempPrev->next;
@@ -84,7 +83,7 @@ unsigned int sleep(unsigned long millisec){
 			currentProcess->state = STATE_STOPPED;
 			decrementTimes(currentProcess->next, diffTicks);
 			kprintf("+M+");
-			printSleepQueue();
+			//printSleepQueue();
 		}else{
 			kprintf("SLEEP ERROR\n");
 		}
@@ -128,7 +127,7 @@ void tick(void){
 			sleepers->sleeptime--;
 		}
 	}else{
-		kprintf(".");
+		//kprintf(".");
 	}
 }
 

@@ -83,6 +83,8 @@ struct struct_pcb {
 	long args;
 	pcb *sender;
 	pcb *nextSender;
+	pcb *receiver;
+	pcb *nextReceiver;
 	//NOTE: in order to check negative value errors, this must be signed
 	long sleeptime; //counter for sleep on delta list
 	pcb *nextSleeper; //next process on sleep queue

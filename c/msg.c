@@ -51,7 +51,11 @@ int send(int dest_pid, int msg){
 	//if receiver is blocked and therefore ready to receive message,
 	//then message copied to receive buffer, place both processes both on ready queue
 	}else{
+
+		// dont you actually want to put the process both on the queue and than change name as well?
 		dest_p->msg = msg;
+		//ready(dest_p);
+		//ready(sender_p);
 		dest_p->state = STATE_READY;
 		sender_p->state = STATE_READY;
 	}
@@ -86,40 +90,41 @@ int receive(int sender_pid, unsigned long *msg){
 	// if recv() is called before matching send, the receiving process is blocked
 	// until matching send occurs
 	if (sending_process->state != STATE_BLOCKED) {
-		receiving_process->state == STATE_BLOCKED;
-		return -1;
+		receiving_process->state = STATE_BLOCKED;
+		// receiving_process->next->state = STATE_READY; (would it be next or nextSender in the queue)
+		receiving_process->nextSender->state = STATE_READY;
+		msg = sending_process->msg;
+		ready(receiving_process);
+		ready(sending_process);
+		return 0;
+
 	}
-
-
 
 	// receiving process cannot send to itself
 	if (receiving_process->pid == sending_process->pid) {
 		return -2;
 	}
 
+	// if matching send has occurred (which implies sending process is blocked), the message is copied into the receive buffer
+	// and both processes are placed on the ready queue
 	if (sending_process->state == STATE_BLOCKED && receiving_process->sender->pid == sending_process->pid && sender_pid != 0){
 
-		// bcopy from xeros kernel header file
-		// copy data
-		//void bcopy(const void *src, void *dest, unsigned int n);
-		//bcopy(src_process->buf, buffer, src_process->msg);
+		// msg copied into receive buffer
 		msg = receiving_process->msg;
-		// unblock sending process
+		
+		// put receiving and sending process on ready queue once msg has been transferred and then change the state of both processes to state_ready
 		ready(sending_process);
-		// then return received bytes indiciating the receiving process received something
-	
+		ready(receiving_process);
+		sending_process->state = STATE_READY;
+		receiving_process->state = STATE_READY;
+		return 0;
 
 	 } else {
 		kprintf("no senders\n");
 		return -1;
 	}
 
-	//this_process->buf->addr = buffer;
-	//this_process->buf->size = len;
-	receiving_process->state = RECV_BLOCKED;
 
-	// source process not yet sending
-	return -3;
 }
 
 

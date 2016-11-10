@@ -78,11 +78,10 @@ struct struct_pcb {
 	int ret; /* Return value of system call             */
 	/* if process interrupted because of system*/
 	/* call                                    */
-	pcb* msg_queue; // queue of senders
 	unsigned long msg; //received message from another process
 	long args;
-	pcb *sender;
-	pcb *nextSender;
+	pcb *sender; // queue of senders
+	pcb *nextSender; // first sender of queue of senders 
 	//NOTE: in order to check negative value errors, this must be signed
 	long sleeptime; //counter for sleep on delta list
 	pcb *nextSleeper; //next process on sleep queue

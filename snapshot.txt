@@ -1,25 +1,25 @@
-Booting from Floppy...
 
 Loading........
 
 
 CPSC 415, 2016W1
 32 Bit Xeros 0.01
-Located at: 0 to 6440
+Located at: 0 to 6540
 Max addr is 4194303 3fffff
 memory inited
 dispatcher inited
 context inited
 create inited
-RootPID = 1, P1PID = -1330597712, ConPID:-1330597712, P2PID:3, P3PID:4, P4PID:5
-, P5PID:6, P6PID:7.-P2-
-ADD:10
-+0+<S:10>-P3-
-ADD:15
-+E+<S:10><S:5>-P5-
-ADD:22
-+E+<S:10><S:5><S:7>-P6-
-ADD:3
-+B+<S:3><S:7><S:2><S:4>-P4-
-ADD:12
-+M+<S:3><S:7><S:2><S:0><S:2>ß
+.RootPID = 1, P1PID = -1330597712, ConPID:-1330597712, P2PID:3, P3PID:4, P4PID:5
+
+, P5PID:6, P6PID:7.
+ticks:100
++0+<S:100>
+ticks:200
++E+<S:100><S:100>
+ticks:400
++E+<S:99><S:100><S:201>
+ticks:500
++E+<S:99><S:100><S:201><S:100>
+ticks:300
++M+<S:99><S:100><S:101><S:100><S:100>-P2:-P3:-P4:-P5:-P6:ß

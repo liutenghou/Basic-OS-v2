@@ -43,7 +43,7 @@ void producer2(void) {
 void producer3(void) {
 	/****************************/
 	
-	syssleep(15000);
+	syssleep(3000);
 	kprintf("-P3:");
 	sysstop();
 }
@@ -51,7 +51,7 @@ void producer3(void) {
 void producer4(void) {
 	/****************************/
 	
-	syssleep(1200);
+	syssleep(5000);
 	kprintf("-P4:");
 	sysstop();
 }
@@ -59,14 +59,14 @@ void producer4(void) {
 void producer5(void) {
 	/****************************/
 	
-	syssleep(2200);
+	syssleep(7000);
 	kprintf("-P5:");
 	sysstop();
 }
 void producer6(void) {
 	/****************************/
 	
-	syssleep(30000);
+	syssleep(9000);
 	kprintf("-P6:");
 	sysstop();
 }

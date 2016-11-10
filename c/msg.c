@@ -93,9 +93,7 @@ int receive(int sender_pid, unsigned long *msg){
 		receiving_process->state = STATE_BLOCKED;
 		// receiving_process->next->state = STATE_READY; (would it be next or nextSender in the queue)
 		receiving_process->nextSender->state = STATE_READY;
-		msg = sending_process->msg;
-		ready(receiving_process);
-		ready(sending_process);
+		msg = receiving_process->msg;
 		return 0;
 
 	}

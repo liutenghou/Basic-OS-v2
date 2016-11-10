@@ -19,7 +19,7 @@ void dispatch(void) {
 	int stack;
 	// variable length list of arguments
 	va_list ap;
-	char *s;
+	//char *s;
 	int toPID;
 	unsigned long msg;
 	
@@ -96,13 +96,17 @@ void dispatch(void) {
 			ap = (va_list) p->args;
 			//int receive(int* srcPID, void* buffer, int len)
 			srcPID = va_arg(ap, int);
-			msgP = (unsigned long*) va_arg(ap, unsigned long *);	
+			msgP = (unsigned long*) va_arg(ap, unsigned long*);	
 			p->ret = receive(srcPID, msgP);
 			
 			if (p->state == STATE_BLOCKED) {
-				kprintf("message has not been received");
-				
-			}
+				kprintf("message has not been received from sender on senderqueue:%d",getProcessFromPID(srcPID)->nextSender->pid);
+			} else {
+				kprintf("-messeage has been received-");
+				kprintf("-message: %d-", getProcessFromPID(srcPID)->msg);
+				ready(p);
+				ready(getProcessFromPID(srcPID));
+			} 
 					
 			break;
 		case (SYS_TIMER):

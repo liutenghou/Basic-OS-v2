@@ -9,6 +9,7 @@ void decrementTimes(pcb *p, unsigned long t);
 
 pcb* sleepers = NULL; //is a delta list
 
+
 /*
 
 NOTE: this does NOT handle the case where the same process
@@ -115,6 +116,20 @@ update internal counters
 */
 void tick(void){
 	//kprintf(".");
+	if (sleepers != NULL) {
+		if (sleepers->sleeptime == 0) {
+			if (sleepers->next != NULL) {
+				pcb *temp = sleepers->next;
+				ready(sleepers);
+				sleepers = temp;
+			}else{	
+				ready(sleepers);
+
+			}
+		}else{
+			sleepers->sleeptime--;
+		}
+	}
 }
 
 //testing code, prints all processes on sleepqueue

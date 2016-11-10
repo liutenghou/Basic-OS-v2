@@ -68,11 +68,6 @@ void outb(unsigned int, unsigned char);
 
 /* Structure to track the information associated with a single process */
 
-typedef struct msg_buffer {
-	int ipc_pid;
-	void* addr;
-	int size;
-} buf;
 
 typedef struct struct_pcb pcb;
 struct struct_pcb {
@@ -83,7 +78,6 @@ struct struct_pcb {
 	int ret; /* Return value of system call             */
 	/* if process interrupted because of system*/
 	/* call                                    */
-	buf* buf; // buffer for receive to put msg in
 	pcb* msg_queue; // queue of senders
 	unsigned long msg; //received message from another process
 	long args;

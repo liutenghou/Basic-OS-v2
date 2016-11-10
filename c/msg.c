@@ -61,68 +61,62 @@ int send(int dest_pid, int msg){
 // kernel side: receives call by dispatcher upon sysreceive request from user process
 // arguments: srcPID: source proess pid, buffer: msg copied from sender into buffer, len: message length
 // return: returns length 
-int receive(int *srcPID, unsigned long *msg){
+int receive(int sender_pid, unsigned long *msg){
 	
-	pcb *this_process;
-	pcb *src_process;
-	int buff_limit = sizeof(unsigned long);
+	pcb *receiving_process=getCurrentProcess();
+	pcb *sending_process=getProcessFromPID(sender_pid);
+	int dest_pid = getCurrentPID();
+
 
 	// can receive from any process 
-	if (*srcPID == 0) {
-		if (this_process->msg_queue != NULL) {
+	if (sender_pid == 0) {
+		if (receiving_process->nextSender != NULL) {
 			kprintf("The send queue is not empty!");
-			src_process = this_process->msg_queue;
+			*msg = receiving_process->msg;
 		}
 		kprintf("No matching pid");
 		return -1;
 	}
 
-	// if recv() is called before matching send, the receiving process is blocked
-	// until matching send occurs
-	if (*srcPID != 0) {
-		src_process->pid = *srcPID;
-		kprintf("receiving from %d to %d\n", *srcPID, this_process->pid);
-	}
-
 	// there is no matching pid
-	if (*srcPID == -1) {
+	if (sender_pid == -1) {
 		return -1;
 	}
 
+	// if recv() is called before matching send, the receiving process is blocked
+	// until matching send occurs
+	if (sending_process->state != STATE_BLOCKED) {
+		receiving_process->state == STATE_BLOCKED;
+		return -1;
+	}
+
+
+
 	// receiving process cannot send to itself
-	if (this_process->pid == src_process->pid) {
+	if (receiving_process->pid == sending_process->pid) {
 		return -2;
 	}
 
-	// receiving from process that is receiving from you
-	if (src_process) {
-		if (src_process->state == RECV_BLOCKED) {
-			if (src_process->buf->ipc_pid == this_process->pid) {
-				return -4;
-			}
-		}
-	}
-
-	if (src_process->state == SEND_BLOCKED && src_process->buf->ipc_pid == this_process->pid && *srcPID != 0){
+	if (sending_process->state == STATE_BLOCKED && receiving_process->sender->pid == sending_process->pid && sender_pid != 0){
 
 		// bcopy from xeros kernel header file
 		// copy data
 		//void bcopy(const void *src, void *dest, unsigned int n);
 		//bcopy(src_process->buf, buffer, src_process->msg);
-
+		msg = receiving_process->msg;
 		// unblock sending process
-		ready(src_process);
+		ready(sending_process);
 		// then return received bytes indiciating the receiving process received something
-		return buff_limit;
+	
 
 	 } else {
 		kprintf("no senders\n");
-		this_process->buf->ipc_pid = -1;
+		return -1;
 	}
 
 	//this_process->buf->addr = buffer;
 	//this_process->buf->size = len;
-	this_process->state = RECV_BLOCKED;
+	receiving_process->state = RECV_BLOCKED;
 
 	// source process not yet sending
 	return -3;

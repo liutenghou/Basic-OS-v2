@@ -34,35 +34,40 @@ void consumer(void) {
 void producer2(void) {
 	/****************************/
 
+	
+	syssleep(1000);
 	kprintf("-P2:");
-	syssleep(10);
 	sysstop();
 }
 
 void producer3(void) {
 	/****************************/
+	
+	syssleep(15000);
 	kprintf("-P3:");
-	syssleep(15);
 	sysstop();
 }
 
 void producer4(void) {
 	/****************************/
+	
+	syssleep(1200);
 	kprintf("-P4:");
-	syssleep(12);
 	sysstop();
 }
 
 void producer5(void) {
 	/****************************/
+	
+	syssleep(2200);
 	kprintf("-P5:");
-	syssleep(22);
 	sysstop();
 }
 void producer6(void) {
 	/****************************/
+	
+	syssleep(30000);
 	kprintf("-P6:");
-	syssleep(3);
 	sysstop();
 }
 

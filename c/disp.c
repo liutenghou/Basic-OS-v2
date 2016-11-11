@@ -117,6 +117,10 @@ void dispatch(void) {
 				p=next();
 			} else if(p->ret == 0) {
 				kprintf("-RECV OK-");
+				//get the sender on the ready queue since send was good
+				ready(getProcessFromPID(senderPID));
+				//continue executing
+
 				//TODO:ready sender and receiver on queue
 			} else{
 				kprintf("error on receive\n");

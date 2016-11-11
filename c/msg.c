@@ -145,7 +145,7 @@ int receive(int *senderPID, unsigned long *msg) {
 			kprintf("<R7>");
 			*msg = receiverProcess->msg;
 			*senderPID = receiverProcess->sender->pid;
-			//sending process has to be blocked, unblock it, back on readyqueue
+			//sending process was be blocked, unblock it, back on readyqueue
 			//if root pid, don't do this
 			if(receiverProcess->sender->pid != 1){
 				kprintf("<R8>");
@@ -154,6 +154,12 @@ int receive(int *senderPID, unsigned long *msg) {
 
 			//remove sender from senderqueue
 			receiverProcess->sender = NULL;
+			//move next sender if exists
+			if (receiverProcess->nextSender != NULL) {
+				receiverProcess->sender = receiverProcess->nextSender;
+				receiverProcess->nextSender =
+						receiverProcess->nextSender->nextSender;
+			}
 
 		}else if(receiverProcess->nextSender != NULL){ //check rest of queue
 			kprintf("<R9>");
@@ -177,7 +183,7 @@ int receive(int *senderPID, unsigned long *msg) {
 						receiverProcess->nextSender =
 								receiverProcess->nextSender->nextSender;
 					}
-					ready(receiverProcess);
+
 					return 0;
 				}else{
 					temp = temp->nextSender;

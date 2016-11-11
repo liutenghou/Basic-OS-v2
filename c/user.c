@@ -101,7 +101,7 @@ void root(void) {
 	syssend(proc_pid3, 3000);
 	syssend(proc_pid4, 4000);
 
-	syssleep(9000);
+	syssleep(13000);
 	sysputs("back at kernel\n");
 
 	int i;

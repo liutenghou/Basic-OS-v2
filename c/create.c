@@ -85,6 +85,13 @@ int create( funcptr fp, size_t stackSize ) {
     p->esp = (unsigned long*)cf;
     p->state = STATE_READY;
     p->pid = nextpid++;
+    p->sending = 0; //1 if sending, 0 if not
+    p->receiving = 0; //1 if receiving, 0 if not
+    p->msg = 0; //received message from another process
+	p->sender = NULL;
+	p->nextSender = NULL;
+	p->receiver = NULL;
+	p->nextReceiver = NULL;
 
     ready( p );
     return p->pid;

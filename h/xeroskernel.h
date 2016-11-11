@@ -57,8 +57,6 @@ void outb(unsigned int, unsigned char);
 #define STATE_STOPPED   0
 #define STATE_READY     1
 #define STATE_BLOCKED	2
-#define RECV_BLOCKED    3
-#define SEND_BLOCKED 	4
 
 
 /* System call identifiers */
@@ -71,6 +69,8 @@ void outb(unsigned int, unsigned char);
 
 typedef struct struct_pcb pcb;
 struct struct_pcb {
+	int sending; //1 if sending, 0 if not
+	int receiving; //1 if receiving, 0 if not
 	unsigned long *esp; /* Pointer to top of saved stack           */
 	pcb *next; /* Next process in the list, if applicable */
 	int state; /* State the process is in, see above      */

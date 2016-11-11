@@ -54,6 +54,12 @@ void dispatch(void) {
 			ready(p);
 			p->ret = 0; //arbitrary value
 			p = next();
+
+			if(p->sending  || p->receiving){
+				ready(p);
+				p = next();
+			}
+
 			break;
 		case (SYS_STOP):
 			p->state = STATE_STOPPED;
@@ -81,6 +87,8 @@ void dispatch(void) {
 			//kprintf("SYS_SEND, toPID:%d, msg:%d", toPID, msg);
 
 			p->ret = send(toPID, msg);
+			if(p->ret < 0)break;
+
 			if (p->state == STATE_BLOCKED) { //message not sent
 				kprintf("-message send FAIL-senderonqueue:%d-",
 						getProcessFromPID(toPID)->sender->pid);
@@ -99,14 +107,18 @@ void dispatch(void) {
 			msgP = va_arg(ap, unsigned long*);
 			p->ret = receive(senderPID, msgP);
 			
-			if (p->state == STATE_BLOCKED) { //sender blocked
-				kprintf("msg not recvd senderqueue:%d",getProcessFromPID(senderPID)->nextSender->pid);
-			} else {
-				kprintf("-messeage has been received-");
-				kprintf("-message: %d-", getProcessFromPID(senderPID)->msg);
-				ready(p);
-				ready(getProcessFromPID(senderPID));
-			} 
+			if(p->ret < 0 && p->ret!=-4 ){
+				kprintf("error:%d ", p->ret);
+				break;
+			}else if (p->ret == -4) { //receiver blocked
+				kprintf("msg not recvd senderqueue:%d\n",p->nextSender->pid);
+				blockedReady(p);
+				p=next();
+			} else if(p->ret == 0) {
+				kprintf("-messeage has been received-\n");
+			} else{
+				kprintf("error on receive\n");
+			}
 					
 			break;
 		case (SYS_TIMER):
@@ -151,6 +163,18 @@ extern void ready(pcb *p) {
 		head = p; //only process, put itself at head
 	}
 	tail = p;
+}
+
+//puts in back of readyqueue without unblocking
+extern void blockedReady(pcb *p){
+	p->next = NULL;
+	if (tail) {
+		tail->next = p; //put at back of ready queue
+	} else {
+		head = p; //only process, put itself at head
+	}
+	tail = p;
+
 }
 
 //pull first process from readyqueue

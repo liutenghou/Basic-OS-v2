@@ -11,13 +11,13 @@ void process1(void) {
 	unsigned long msg = 2000;
 	kprintf("Process:%d alive\n", sysgetpid());
 	syssleep(5000);
-
-	sysrecv(&senderpid, &msg);
+	kprintf("sleep1done\n");
 	//receive from root process
+	sysrecv(&senderpid, &msg);
 
 	//prints a message that msg received, how long left to sleep
 
-	kprintf("Process:%d sleep done, exit\n", sysgetpid());
+	kprintf("Process:%d sleep2done, exit\n", sysgetpid());
 	sysstop();
 }
 
@@ -28,11 +28,14 @@ void process2(void) {
 	unsigned long msg = 4000;
 	kprintf("Process:%d alive\n", sysgetpid());
 	syssleep(5000);
+	kprintf("sleep1done\n");
 	//receive from root process
+	//receive from root process
+	sysrecv(&senderpid, &msg);
 
 	//prints a message that msg received, how long left to sleep
 
-	kprintf("Process:%d sleep done, exit\n", sysgetpid());
+	kprintf("Process:%d sleep2done, exit\n", sysgetpid());
 	sysstop();
 }
 
@@ -40,28 +43,32 @@ void process3(void) {
 	/****************************/
 
 	int senderpid = 1; //need this to get the sender_pid
-	unsigned long msg = 6;
+	unsigned long msg = 6000;
 	kprintf("Process:%d alive\n", sysgetpid());
 	syssleep(5000);
+	kprintf("sleep1done\n");
 	//receive from root process
+	sysrecv(&senderpid, &msg);
 
 	//prints a message that msg received, how long left to sleep
 
-	kprintf("Process:%d sleep done, exit\n", sysgetpid());
+	kprintf("Process:%d sleep2done, exit\n", sysgetpid());
 	sysstop();
 }
 
 void process4(void) {
 	/****************************/
 	int senderpid = 1; //need this to get the sender_pid
-	unsigned long msg = 8;
+	unsigned long msg = 8000;
 	kprintf("Process:%d alive\n", sysgetpid());
 	syssleep(5000);
+	kprintf("sleep1done\n");
 	//receive from root process
+	sysrecv(&senderpid, &msg);
 
 	//prints a message that msg received, how long left to sleep
 
-	kprintf("Process:%d sleep done, exit\n", sysgetpid());
+	kprintf("Process:%d sleep2done, exit\n", sysgetpid());
 	sysstop();
 }
 
@@ -86,10 +93,10 @@ void root(void) {
 		sysyield();
 	}
 
-//	syssend(2, 1000);
-//	syssend(3, 2000);
-//	syssend(4, 3000);
-//	syssend(5, 4000);
+	syssend(proc_pid1, 1000);
+	syssend(proc_pid2, 2000);
+	syssend(proc_pid3, 3000);
+	syssend(proc_pid4, 4000);
 
 	syssleep(9000);
 	sysputs("back at kernel\n");

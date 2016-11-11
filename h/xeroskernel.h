@@ -156,6 +156,7 @@ extern int syskill(int pid);
 extern int syssend(int dest_pid, unsigned long msg);
 extern int sysrecv(int *from_pid, unsigned long *msg);
 extern pcb* getProcessFromPID(int pid);
+extern void blockedReady(pcb *p);
 
 void killprocess(int pid);
 

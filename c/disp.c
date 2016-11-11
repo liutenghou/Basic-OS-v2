@@ -90,11 +90,11 @@ void dispatch(void) {
 			if(p->ret < 0)break;
 
 			if (p->state == STATE_BLOCKED) { //message not sent
-				kprintf("-message send FAIL-senderonqueue:%d-",
-						getProcessFromPID(toPID)->sender->pid);
+//				kprintf("-message send FAIL-senderonqueue:%d-",getProcessFromPID(toPID)->sender->pid);
+				kprintf("-SEND BLOCK-");
 
 			} else { //msg sent successfully, place both on ready queue
-				kprintf("-message sent OK-");
+				kprintf("-SEND OK-");
 				kprintf("-message:%d-", getProcessFromPID(toPID)->msg);
 				ready(p);
 				ready(getProcessFromPID(toPID));
@@ -111,11 +111,12 @@ void dispatch(void) {
 				kprintf("error:%d ", p->ret);
 				break;
 			}else if (p->ret == -4) { //receiver blocked
-				kprintf("msg not recvd senderqueue:%d\n",p->nextSender->pid);
+//				kprintf("msg not recvd senderqueue:%d-",p->nextSender->pid);
+				kprintf("-REC BLOCK-");
 				blockedReady(p);
 				p=next();
 			} else if(p->ret == 0) {
-				kprintf("-messeage has been received-\n");
+				kprintf("-RECV OK-");
 				//TODO:ready sender and receiver on queue
 			} else{
 				kprintf("error on receive\n");

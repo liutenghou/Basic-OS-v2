@@ -4,7 +4,7 @@
 
 #include <xeroskernel.h>
 
-//TODO: change msg to be buffer in sender instead of receiver, makes more sense
+//TODO: change msg to be buffer in receiver
 
 /* kernel side: sends a message from process to another process
  * arguments: destPid: destination process pid, msg: an int to send
@@ -16,7 +16,7 @@ int send(int destPID, unsigned long msg) {
 
 
 	int senderPID = sysgetpid();
-	pcb *senderP = getProcessFromPID(senderPID);
+	pcb *senderP = getProcessFromPID(senderPID);	//sender
 
 
 	if(destPID <= 0){
@@ -27,7 +27,7 @@ int send(int destPID, unsigned long msg) {
 		return -2;
 	}
 
-	pcb *destP = getProcessFromPID(destPID);
+	pcb *destP = getProcessFromPID(destPID);		//receiver
 	//dest process not found
 	if (destP == NULL) {
 		kprintf("send: dest not exist\n");
@@ -54,7 +54,7 @@ int send(int destPID, unsigned long msg) {
 		} else { //only sender
 
 			kprintf("destpid:%d, senderpid:%d ", destP->pid, senderP->pid);//add senderP to receiver senderqueue
-			senderP->msg = msg;
+			destP->msg = msg;
 			destP->sender = senderP;
 		}
 		//block sender
@@ -115,7 +115,7 @@ int receive(int *senderPID, unsigned long *msg) {
 		} else {
 			//receive message
 			kprintf("<R>");
-			*msg = receiverProcess->sender->msg;
+			*msg = receiverProcess->msg;
 			*senderPID = receiverProcess->sender->pid;
 			//sending process has to be blocked, unblock it, back on readyqueue
 			if(receiverProcess->sender->pid != 1){
@@ -138,7 +138,7 @@ int receive(int *senderPID, unsigned long *msg) {
 		//check sender, see if on senderqueue, if so receive it
 		if(receiverProcess->sender->pid == *senderPID){
 			kprintf("<R2>");
-			*msg = receiverProcess->sender->msg;
+			*msg = receiverProcess->msg;
 			*senderPID = receiverProcess->sender->pid;
 			//sending process has to be blocked, unblock it, back on readyqueue
 			//if root pid, don't do this
@@ -155,7 +155,7 @@ int receive(int *senderPID, unsigned long *msg) {
 			while(temp != NULL){
 				if(temp->pid == *senderPID){
 					kprintf("<R3>");
-					*msg = receiverProcess->sender->msg;
+					*msg = receiverProcess->msg;
 					*senderPID = receiverProcess->sender->pid;
 					//sending process has to be blocked, unblock it, back on readyqueue
 					if(receiverProcess->sender->pid != 1){

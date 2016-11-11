@@ -15,6 +15,7 @@ void process1(void) {
 	//receive from root process
 	sysrecv(&senderpid, &msg);
 	kprintf("p1msg:%d ", msg);
+	syssleep(msg);
 	//prints a message that msg received, how long left to sleep
 
 	kprintf("Process:%d sleep2done, exit\n", sysgetpid());
@@ -33,6 +34,7 @@ void process2(void) {
 	//receive from root process
 	sysrecv(&senderpid, &msg);
 	kprintf("p2msg:%d ", msg);
+	syssleep(msg);
 	//prints a message that msg received, how long left to sleep
 
 	kprintf("Process:%d sleep2done, exit\n", sysgetpid());
@@ -50,6 +52,7 @@ void process3(void) {
 	//receive from root process
 	sysrecv(&senderpid, &msg);
 	kprintf("p3msg:%d ", msg);
+	syssleep(msg);
 	//prints a message that msg received, how long left to sleep
 
 	kprintf("Process:%d sleep2done, exit\n", sysgetpid());
@@ -66,6 +69,7 @@ void process4(void) {
 	//receive from root process
 	sysrecv(&senderpid, &msg);
 	kprintf("p4msg:%d ", msg);
+	syssleep(msg);
 	//prints a message that msg received, how long left to sleep
 
 	kprintf("Process:%d sleep2done, exit\n", sysgetpid());
@@ -76,7 +80,6 @@ void root(void) {
 	/****************************/
 	int proc_pid1, proc_pid2, proc_pid3, proc_pid4;
 	root_pid = sysgetpid();
-	char *str;
 
 	proc_pid1 = syscreate(&process1, 4096);
 	proc_pid2 = syscreate(&process2, 4096);

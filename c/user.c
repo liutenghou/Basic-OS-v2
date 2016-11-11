@@ -11,7 +11,7 @@ void process1(void) {
 	unsigned long msg = 0;
 	kprintf("Process:%d alive\n", sysgetpid());
 	syssleep(5000);
-	kprintf("sleep1done\n");
+	kprintf("p1sleep1done ");
 	//receive from root process
 	sysrecv(&senderpid, &msg);
 	kprintf("p1msg:%d ", msg);
@@ -29,7 +29,7 @@ void process2(void) {
 	unsigned long msg = 0;
 	kprintf("Process:%d alive\n", sysgetpid());
 	syssleep(5000);
-	kprintf("sleep1done\n");
+	kprintf("p2sleep1done ");
 	//receive from root process
 	//receive from root process
 	sysrecv(&senderpid, &msg);
@@ -48,7 +48,7 @@ void process3(void) {
 	unsigned long msg = 0;
 	kprintf("Process:%d alive\n", sysgetpid());
 	syssleep(5000);
-	kprintf("sleep1done\n");
+	kprintf("p3sleep1 done ");
 	//receive from root process
 	sysrecv(&senderpid, &msg);
 	kprintf("p3msg:%d ", msg);
@@ -65,7 +65,7 @@ void process4(void) {
 	unsigned long msg = 0;
 	kprintf("Process:%d alive\n", sysgetpid());
 	syssleep(5000);
-	kprintf("sleep1done\n");
+	kprintf("p4sleep1done ");
 	//receive from root process
 	sysrecv(&senderpid, &msg);
 	kprintf("p4msg:%d ", msg);

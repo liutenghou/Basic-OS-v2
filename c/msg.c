@@ -12,7 +12,7 @@
  *
  */
 int send(int destPID, unsigned long msg) {
-	kprintf("|SENDfrompid:%d - destpid:%d - msg:%d|", sysgetpid(), destPID, msg);
+	kprintf("|SENDer:%d,destpid:%d|", sysgetpid(), destPID);
 
 
 	int senderPID = sysgetpid();

@@ -9,16 +9,20 @@ void process1(void) {
 	/****************************/
 	int senderpid = 1; //need this to get the sender_pid
 	unsigned long msg = 0;
-	kprintf("Process:%d alive\n", sysgetpid());
+	//kprintf("Process:%d alive\n", sysgetpid());
 	syssleep(5000);
-	kprintf("p1sleep1done ");
+	kprintf("(p1sleep1done)");
 	//receive from root process
 	sysrecv(&senderpid, &msg);
-	kprintf("p1msg:%d ", msg);
+	kprintf("(p1msg:%d)", msg);
 	syssleep(msg);
-	//prints a message that msg received, how long left to sleep
 
-	kprintf("Process:%d sleep2done, exit\n", sysgetpid());
+	sysrecv(&senderpid, &msg);
+	kprintf("(p1msg2:%d)", msg);
+	syssleep(msg);
+
+
+	kprintf("(Process:%d sleep2done, exit\n)", sysgetpid());
 	sysstop();
 }
 
@@ -27,17 +31,20 @@ void process2(void) {
 
 	int senderpid = 1; //need this to get the sender_pid
 	unsigned long msg = 0;
-	kprintf("Process:%d alive\n", sysgetpid());
+	//kprintf("Process:%d alive\n", sysgetpid());
 	syssleep(5000);
-	kprintf("p2sleep1done ");
+	kprintf("(p2sleep1done)");
 	//receive from root process
-	//receive from root process
-	sysrecv(&senderpid, &msg);
-	kprintf("p2msg:%d ", msg);
-	syssleep(msg);
-	//prints a message that msg received, how long left to sleep
 
-	kprintf("Process:%d sleep2done, exit\n", sysgetpid());
+	sysrecv(&senderpid, &msg);
+	kprintf("(p2msg:%d)", msg);
+	syssleep(msg);
+
+	sysrecv(&senderpid, &msg);
+	kprintf("(p2msg2:%d)", msg);
+	//syssleep(msg);
+
+	kprintf("(Process:%d sleep2done, exit\n)", sysgetpid());
 	sysstop();
 }
 
@@ -46,14 +53,17 @@ void process3(void) {
 
 	int senderpid = 1; //need this to get the sender_pid
 	unsigned long msg = 0;
-	kprintf("Process:%d alive\n", sysgetpid());
+//	kprintf("Process:%d alive\n", sysgetpid());
 	syssleep(5000);
 	kprintf("p3sleep1 done ");
 	//receive from root process
 	sysrecv(&senderpid, &msg);
 	kprintf("p3msg:%d ", msg);
 	syssleep(msg);
-	//prints a message that msg received, how long left to sleep
+
+	sysrecv(&senderpid, &msg);
+	kprintf("3msg2:%d ", msg);
+	syssleep(msg);
 
 	kprintf("Process:%d sleep2done, exit\n", sysgetpid());
 	sysstop();
@@ -63,47 +73,55 @@ void process4(void) {
 	/****************************/
 	int senderpid = 1; //need this to get the sender_pid
 	unsigned long msg = 0;
-	kprintf("Process:%d alive\n", sysgetpid());
+//	kprintf("Process:%d alive\n", sysgetpid());
 	syssleep(5000);
-	kprintf("p4sleep1done ");
+	kprintf("(p4sleep1done)");
 	//receive from root process
 	sysrecv(&senderpid, &msg);
-	kprintf("p4msg:%d ", msg);
+	kprintf("(p4msg:%d)", msg);
 	syssleep(msg);
-	//prints a message that msg received, how long left to sleep
 
-	kprintf("Process:%d sleep2done, exit\n", sysgetpid());
+	sysrecv(&senderpid, &msg);
+	kprintf("(p4msg2:%d)", msg);
+	syssleep(msg);
+
+	kprintf("(Process:%d sleep2done, exit\n)", sysgetpid());
 	sysstop();
 }
 
 void root(void) {
 	/****************************/
-	int proc_pid1, proc_pid2, proc_pid3, proc_pid4;
+	int procPID1, procPID2, procPID3, procPID4;
 	root_pid = sysgetpid();
 
-	proc_pid1 = syscreate(&process1, 4096);
-	proc_pid2 = syscreate(&process2, 4096);
-	proc_pid3 = syscreate(&process3, 4096);
-	proc_pid4 = syscreate(&process4, 4096);
+	procPID1 = syscreate(&process1, 4096);
+	procPID2 = syscreate(&process2, 4096);
+	procPID3 = syscreate(&process3, 4096);
+	procPID4 = syscreate(&process4, 4096);
 
 	kprintf("RootPID:%d, P1PID:%d, P2PID:%d, P3PID:%d, P4PID:%d\n", root_pid,
-			proc_pid1, proc_pid2, proc_pid3, proc_pid4);
+			procPID1, procPID2, procPID3, procPID4);
 
-	kprintf("Process:%d alive\n", root_pid);
+	kprintf("Process:%d (root) alive\n", root_pid);
 
 	int j;
 	for (j = 0; j < 10; j++) {
 		sysyield();
 	}
 
-	syssend(proc_pid1, 1000);
-	syssend(proc_pid2, 2000);
-	syssend(proc_pid3, 3000);
-	syssend(proc_pid4, 4000);
+	syssend(procPID1, 1000);
+	syssend(procPID2, 2000);
+	syssend(procPID3, 3000);
+	syssend(procPID4, 4000);
 
 	syssleep(13000);
-	sysputs("back at kernel\n");
+	sysputs("kernel: done sleep\n");
+	syssend(procPID3, 10000);
+	syssend(procPID2, 7000);
+	syssend(procPID1, 20000);
+	syssend(procPID4, 27000);
 
+	sysputs("END");
 	int i;
 	for (i = 0; i;) {
 		sysyield();

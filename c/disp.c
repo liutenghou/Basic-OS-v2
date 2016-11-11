@@ -54,9 +54,10 @@ void dispatch(void) {
 			ready(p);
 			p->ret = 0; //arbitrary value
 			p = next();
-
-			if(p->sending  || p->receiving){
-				ready(p);
+			//kprintf("{%d}", p->pid);
+			if(p->state == STATE_STOPPED){
+				blockedReady(p);
+				kprintf("[%d]", p->pid);
 				p = next();
 			}
 
@@ -87,8 +88,10 @@ void dispatch(void) {
 			//kprintf("SYS_SEND, toPID:%d, msg:%d", toPID, msg);
 
 			p->ret = send(toPID, msg);
-			if(p->ret < 0)break;
-
+			if(p->ret < 0){
+				kprintf("-SEND ERR-");
+				break;
+			}
 			if (p->state == STATE_BLOCKED) { //message not sent
 //				kprintf("-message send FAIL-senderonqueue:%d-",getProcessFromPID(toPID)->sender->pid);
 				kprintf("-SEND BLOCK-");
@@ -113,6 +116,7 @@ void dispatch(void) {
 			}else if (p->ret == -4) { //receiver blocked
 //				kprintf("msg not recvd senderqueue:%d-",p->nextSender->pid);
 				kprintf("-REC BLOCK-");
+				p->state = STATE_STOPPED;
 				blockedReady(p);
 				p=next();
 			} else if(p->ret == 0) {
@@ -129,7 +133,14 @@ void dispatch(void) {
 			break;
 		case (SYS_TIMER):
 			tick();
-			ready(p);
+
+			if(p->state == STATE_STOPPED){
+				blockedReady(p);
+				kprintf("{T%d}", p->pid);
+
+			}else{
+				ready(p);
+			}
 			p = next();
 			end_of_intr();
 			break;

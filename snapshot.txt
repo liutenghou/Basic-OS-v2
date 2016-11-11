@@ -1,25 +1,25 @@
-Located at: 0 to 6844
-Max addr is 4194303 3fffff
-memory inited
-dispatcher inited
-context inited
-create inited
 RootPID:1, P1PID:3, P2PID:4, P3PID:5, P4PID:6
-Process:1 alive
-Process:3 alive
-Process:4 alive
-Process:5 alive
-Process:6 alive
-|SENDfrompid:1 - destpid:3 - msg:1000|<S1><S3>destpid:3, senderpid:1 -SEND BLOCK
--|SENDfrompid:1 - destpid:4 - msg:2000|<S1><S3>destpid:4, senderpid:1 -SEND BLOC
-K-|SENDfrompid:1 - destpid:5 - msg:3000|<S1><S3>destpid:5, senderpid:1 -SEND BLO
-CK-|SENDfrompid:1 - destpid:6 - msg:4000|<S1><S3>destpid:6, senderpid:1 -SEND BL
-OCK-p4sleep1done |RECVsenderPID:1, msg:0 |<R6><R7>-RECV OK-p4msg:4000 p3sleep1 d
-one |RECVsenderPID:1, msg:0 |<R6><R7>-RECV OK-p3msg:3000 p2sleep1done |RECVsende
-rPID:1, msg:0 |<R6><R7>-RECV OK-p2msg:2000 p1sleep1done |RECVsenderPID:1, msg:0
-|<R6><R7>-RECV OK-p1msg:1000 Process:3 sleep2done, exit
-Process:4 sleep2done, exit
-Process:5 sleep2done, exit
-Process:6 sleep2done, exit
-back at kernel
-ß
+Process:1 (root) alive
+|SENDer:1,destpid:3|<S1><S3>destpid:3, senderpid:1 -SEND BLOCK-|SENDer:1,destpid
+:4|<S1><S3>destpid:4, senderpid:1 -SEND BLOCK-|SENDer:1,destpid:5|<S1><S3>destpi
+d:5, senderpid:1 -SEND BLOCK-|SENDer:1,destpid:6|<S1><S3>destpid:6, senderpid:1
+-SEND BLOCK-(p4sleep1done)|RECVsenderPID:1, msg:0 |<R6><R7>-RECV OK-(p4msg:4000)
+p3sleep1 done |RECVsenderPID:1, msg:0 |<R6><R7>-RECV OK-p3msg:3000 (p2sleep1done
+)|RECVsenderPID:1, msg:0 |<R6><R7>-RECV OK-(p2msg:2000)(p1sleep1done)|RECVsender
+PID:1, msg:0 |<R6><R7>-RECV OK-(p1msg:1000)|RECVsenderPID:1, msg:1000 |<R6><R11>
+-REC BLOCK-[3][3][3][3][3][3][3][3][3][3][3][3][3][3][3][3][3][3][3][3][3][3][3]
+[3][3][3][3][3][3][3][3][3][3][3](p1msg2:1000)|RECVsenderPID:1, msg:2000 |<R6><R
+11>-REC BLOCK-[4][4][4][4][4][4][4][4][4][4][4][4][4][4][4][4][4][4][4][4][4][4]
+[4][4][4][4][4][4][4][4][4][4][4][4](p2msg2:2000)(Process:4 sleep2done, exit
+)(Process:3 sleep2done, exit
+)|RECVsenderPID:1, msg:3000 |<R6><R11>-REC BLOCK-[5][5][5][5][5][5][5][5][5][5][
+5][5][5][5][5][5][5][5][5][5][5][5][5][5][5][5][5][5][5][5][5][5][5][5][5][5]3ms
+g2:3000 |RECVsenderPID:1, msg:4000 |<R6><R11>-REC BLOCK-[6][6][6][6][6][6][6][6]
+[6][6][6][6][6][6][6][6][6][6][6][6][6][6][6][6][6][6][6][6][6][6][6][6][6][6][6
+](p4msg2:4000)Process:5 sleep2done, exit
+(Process:6 sleep2done, exit
+)kernel: done sleep
+|SENDer:1,destpid:5|<S1><S3>destpid:5, senderpid:1 -SEND BLOCK-|SENDer:1,destpid
+:4|<S1><S3>destpid:4, senderpid:1 -SEND BLOCK-|SENDer:1,destpid:3|<S1><S3>destpi
+d:3, senderpid:1 -SEND BLOCK-|SENDer:1,destpid:6|<S1><S3>destpid:6, senderpid:1
+-SEND BLOCK-ENDß

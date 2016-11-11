@@ -23,7 +23,7 @@ void dispatch(void) {
 	int toPID;
 	unsigned long msg;
 	
-	int srcPID;
+	int *senderPID;
 	unsigned long *msgP;
 	
 	unsigned int tosleeptime;
@@ -65,7 +65,7 @@ void dispatch(void) {
 			break;
 		case (SYS_PUTS):
 			ap = (va_list) p->args;
-			//kprintf("%s", va_arg(ap, char *));
+			kprintf("%s", va_arg(ap, char *));
 			break;
 		case (SYS_KILL):
 			ap = (va_list) p->args;
@@ -95,17 +95,17 @@ void dispatch(void) {
 		case (SYS_RECEIVE):
 			ap = (va_list) p->args;
 			//int receive(int* srcPID, void* buffer, int len)
-			srcPID = va_arg(ap, int);
-			msgP = (unsigned long*) va_arg(ap, unsigned long*);	
-			p->ret = receive(srcPID, msgP);
+			senderPID = va_arg(ap, int*);
+			msgP = va_arg(ap, unsigned long*);
+			p->ret = receive(senderPID, msgP);
 			
-			if (p->state == STATE_BLOCKED) {
-				kprintf("message has not been received from sender on senderqueue:%d",getProcessFromPID(srcPID)->nextSender->pid);
+			if (p->state == STATE_BLOCKED) { //sender blocked
+				kprintf("msg not recvd senderqueue:%d",getProcessFromPID(senderPID)->nextSender->pid);
 			} else {
 				kprintf("-messeage has been received-");
-				kprintf("-message: %d-", getProcessFromPID(srcPID)->msg);
+				kprintf("-message: %d-", getProcessFromPID(senderPID)->msg);
 				ready(p);
-				ready(getProcessFromPID(srcPID));
+				ready(getProcessFromPID(senderPID));
 			} 
 					
 			break;

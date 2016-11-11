@@ -141,7 +141,6 @@ int syscall(int call, ...); /* Used in the system call stub */
 #define SYS_RECEIVE	38
 #define SYS_TIMER	39
 #define SYS_SLEEP 	40
-#define SYS_RECV	41
 
 extern int sysgetpid(void);
 extern void sysputs(char *str);
@@ -149,17 +148,21 @@ extern int syskill(int pid);
 
 //3.3 IPC
 extern int syssend(int dest_pid, unsigned long msg);
-extern int sysrecv(unsigned int *from_pid, unsigned long *msg);
+extern int sysrecv(int *from_pid, unsigned long *msg);
 extern pcb* getProcessFromPID(int pid);
 
-
 void killprocess(int pid);
-//in msg.c
+
 int send(int toPID, int msg);
+int receive(int *sender_pid, unsigned long *msg);
+
+//helpers
 int getCurrentPID(void);
-extern void idleproc(void);
 pcb* getIdleProcPCB(void);
 int getIdlePID(void);
+
+//Idle Process Declaration
+extern void idleproc(void);
 
 //3.7 syssleep
 extern unsigned int syssleep( unsigned long milliseconds );

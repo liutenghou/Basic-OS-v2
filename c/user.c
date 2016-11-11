@@ -7,8 +7,8 @@ int root_pid;
 
 void process1(void) {
 	/****************************/
-	unsigned int senderpid = 0; //need this to get the sender_pid
-	unsigned int msg = 0;
+	int senderpid = 1; //need this to get the sender_pid
+	unsigned long msg = 2000;
 	kprintf("Process:%d alive\n", sysgetpid());
 	syssleep(5000);
 
@@ -24,8 +24,8 @@ void process1(void) {
 void process2(void) {
 	/****************************/
 
-	unsigned int senderpid = 0; //need this to get the sender_pid
-	unsigned int msg = 0;
+	int senderpid = 1; //need this to get the sender_pid
+	unsigned long msg = 4000;
 	kprintf("Process:%d alive\n", sysgetpid());
 	syssleep(5000);
 	//receive from root process
@@ -39,8 +39,8 @@ void process2(void) {
 void process3(void) {
 	/****************************/
 
-	unsigned int senderpid = 0; //need this to get the sender_pid
-	unsigned int msg = 0;
+	int senderpid = 1; //need this to get the sender_pid
+	unsigned long msg = 6;
 	kprintf("Process:%d alive\n", sysgetpid());
 	syssleep(5000);
 	//receive from root process
@@ -53,8 +53,8 @@ void process3(void) {
 
 void process4(void) {
 	/****************************/
-	unsigned int senderpid = 0; //need this to get the sender_pid
-	unsigned int msg = 0;
+	int senderpid = 1; //need this to get the sender_pid
+	unsigned long msg = 8;
 	kprintf("Process:%d alive\n", sysgetpid());
 	syssleep(5000);
 	//receive from root process
@@ -82,7 +82,7 @@ void root(void) {
 	kprintf("Process:%d alive\n", root_pid);
 
 	int j;
-	for (j = 0; j < 1000; j++) {
+	for (j = 0; j < 10; j++) {
 		sysyield();
 	}
 
@@ -92,7 +92,7 @@ void root(void) {
 //	syssend(5, 4000);
 
 	syssleep(9000);
-	sysputs("back at kernel");
+	sysputs("back at kernel\n");
 
 	int i;
 	for (i = 0; i;) {

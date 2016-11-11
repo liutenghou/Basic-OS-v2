@@ -65,25 +65,27 @@ int send(int dest_pid, int msg){
 // kernel side: receives call by dispatcher upon sysreceive request from user process
 // arguments: srcPID: source proess pid, buffer: msg copied from sender into buffer, len: message length
 // return: returns length 
-int receive(int sender_pid, unsigned long *msg){
-	
+int receive(int *sender_pid, unsigned long *msg){
+	kprintf("|sender_pid:%d, msg:%d |", *sender_pid, *msg);
+	//sender_pid is a 2nd return value
+
 	pcb *receiving_process=getCurrentProcess();
-	pcb *sending_process=getProcessFromPID(sender_pid);
 	int dest_pid = getCurrentPID();
 
-
 	// can receive from any process 
-	if (sender_pid == 0) {
+	if (*sender_pid == 0) {
 		if (receiving_process->nextSender != NULL) {
 			kprintf("The send queue is not empty!");
-			msg = receiving_process->msg;
+			*msg = receiving_process->msg;
 		}
 		kprintf("No matching pid");
 		return -1;
 	}
 
+	pcb *sending_process=getProcessFromPID(*sender_pid);
+
 	// there is no matching pid
-	if (sender_pid == -1) {
+	if (*sender_pid == -1) {
 		return -1;
 	}
 

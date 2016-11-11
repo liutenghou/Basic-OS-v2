@@ -7,57 +7,66 @@
 //TODO: change msg to be buffer in sender instead of receiver, makes more sense
 
 /* kernel side: sends a message from process to another process
- * arguments: dest_pid: destination process pid, msg: an int to send
+ * arguments: destPid: destination process pid, msg: an int to send
  * return: 0 on sucess, negative number on error
  *
  */
-int send(int dest_pid, int msg) {
-	kprintf("frompid:%d - destpid:%d - msg:%d\n", sysgetpid(), dest_pid, msg);
+int send(int destPID, unsigned long msg) {
+	kprintf("|SENDfrompid:%d - destpid:%d - msg:%d|\n", sysgetpid(), destPID, msg);
 
-	pcb *dest_p = getProcessFromPID(dest_pid);
-	int sender_pid = sysgetpid();
-	pcb *sender_p = getProcessFromPID(sender_pid);
 
-	//dest is dead, not found
-	if (dest_p == NULL) {
-		kprintf("send: dest not exist\n");
-		return -1;
+	int senderPID = sysgetpid();
+	pcb *senderP = getProcessFromPID(senderPID);
+
+
+	if(destPID <= 0){
+		kprintf("invalid pid\n");
 	}
-	if (dest_p->state == STATE_STOPPED) {
-		kprintf("send: dest cannot receive\n");
-		return -1;
-	}
-	//kprintf(" sysgetpid():%d ", sysgetpid());
-	//destination is self
-	if (dest_pid == sender_pid) {
+	if (destPID == senderPID) {
 		kprintf("send: dest same as self\n");
 		return -2;
 	}
 
+	pcb *destP = getProcessFromPID(destPID);
+	//dest process not found
+	if (destP == NULL) {
+		kprintf("send: dest not exist\n");
+		return -1;
+	}
+	destP->msg = msg; //store message in own pcb
+
+//	if (destPID->state == STATE_STOPPED) {
+//		kprintf("send: dest cannot receive\n");
+//		return -1;
+//	}
+	//kprintf(" sysgetpid():%d ", sysgetpid());
+	//destination is self
+
 	//if receiver is not blocked on matched receive, block send until matched receive made
-	if (dest_p->state != STATE_BLOCKED) {
-		//add p to receiver senderqueue
-		if (dest_p->sender != NULL) {
-			pcb *temp = dest_p->nextSender;
-			while (temp != NULL) {
+	if (destP->state != STATE_BLOCKED) {
+
+		if (destP->sender != NULL) { //check next
+			pcb *temp = destP->nextSender;
+			while (temp->nextSender != NULL) {
 				temp = temp->nextSender;
 			}
-			temp = sender_p;
-		} else {
-			dest_p->sender = sender_p;
+			temp = senderP;
+		} else { //only sender
+
+			kprintf("destpid:%d, senderpid:%d ", destP->pid, senderP->pid);//add senderP to receiver senderqueue
+			senderP->msg = msg;
+			destP->sender = senderP;
 		}
-		//block send
-		sender_p->state = STATE_BLOCKED;
+		//block sender
+		senderP->state = STATE_BLOCKED;
 		//if receiver is blocked and therefore ready to receive message,
 		//then message copied to receive buffer, place both processes both on ready queue
 	} else {
+		//send message
+		//check receivingqueue
 
-		// dont you actually want to put the process both on the queue and than change name as well?
-		dest_p->msg = msg;
-		//ready(dest_p);
-		//ready(sender_p);
-		dest_p->state = STATE_READY;
-		sender_p->state = STATE_READY;
+		//ready(destP);
+		//ready(senderP);
 	}
 	return 0;
 }
@@ -67,7 +76,7 @@ int send(int dest_pid, int msg) {
 //returns -4 if receiver blocked, waiting on sender
 int receive(int *senderPID, unsigned long *msg) {
 
-	kprintf("|sender_pid:%d, msg:%d |", *senderPID, *msg);
+	kprintf("|RECVsenderPID:%d, msg:%d |", *senderPID, *msg);
 	pcb *receiverProcess = getCurrentProcess();
 
 	// receiving process cannot receive from itself
@@ -105,10 +114,13 @@ int receive(int *senderPID, unsigned long *msg) {
 		//sending queue not empty, transfer message immediately
 		} else {
 			//receive message
+			kprintf("<R>");
 			*msg = receiverProcess->sender->msg;
 			*senderPID = receiverProcess->sender->pid;
 			//sending process has to be blocked, unblock it, back on readyqueue
-			ready(receiverProcess->sender);
+			if(receiverProcess->sender->pid != 1){
+				ready(receiverProcess->sender);
+			}
 			//remove sender from senderqueue
 			receiverProcess->sender = NULL;
 
@@ -125,19 +137,30 @@ int receive(int *senderPID, unsigned long *msg) {
 		kprintf("receive() pid:%d - ", *senderPID);
 		//check sender, see if on senderqueue, if so receive it
 		if(receiverProcess->sender->pid == *senderPID){
+			kprintf("<R2>");
 			*msg = receiverProcess->sender->msg;
 			*senderPID = receiverProcess->sender->pid;
+			//sending process has to be blocked, unblock it, back on readyqueue
+			//if root pid, don't do this
+			if(receiverProcess->sender->pid != 1){
+				ready(receiverProcess->sender);
+			}
 
+			//remove sender from senderqueue
+			receiverProcess->sender = NULL;
 
 		}else if(receiverProcess->nextSender != NULL){ //check rest of queue
 			kprintf("hasNextSender ");
 			pcb *temp = receiverProcess->nextSender;
 			while(temp != NULL){
 				if(temp->pid == *senderPID){
+					kprintf("<R3>");
 					*msg = receiverProcess->sender->msg;
 					*senderPID = receiverProcess->sender->pid;
 					//sending process has to be blocked, unblock it, back on readyqueue
-					ready(receiverProcess->sender);
+					if(receiverProcess->sender->pid != 1){
+						ready(receiverProcess->sender);
+					}
 					//remove sender from senderqueue
 					receiverProcess->sender = NULL;
 
@@ -161,9 +184,6 @@ int receive(int *senderPID, unsigned long *msg) {
 				receiverProcess->state = STATE_BLOCKED;
 				return -4;
 			}
-
-
-
 		}else{
 			kprintf("noSender ");
 			//put receiver on sender's receiver queue
@@ -176,7 +196,6 @@ int receive(int *senderPID, unsigned long *msg) {
 		//put self on sender's receiverqueue
 
 		//otherwise block self, put sender on receivingqueue
-
 
 	}
 

@@ -153,7 +153,7 @@ extern pcb* getProcessFromPID(int pid);
 
 void killprocess(int pid);
 
-int send(int toPID, int msg);
+int send(int toPID, unsigned long msg);
 int receive(int *sender_pid, unsigned long *msg);
 
 //helpers

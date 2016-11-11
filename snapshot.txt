@@ -1,25 +1,25 @@
-Booting from Floppy...
-
-Loading........
-
-
-CPSC 415, 2016W1
-32 Bit Xeros 0.01
-Located at: 0 to 6844
-Max addr is 4194303 3fffff
-memory inited
-dispatcher inited
-context inited
-create inited
-RootPID:1, P1PID:3, P2PID:4, P3PID:5, P4PID:6
-Process:1 alive
 Process:3 alive
 Process:4 alive
 Process:5 alive
 Process:6 alive
-|sender_pid:1, msg:8000 |receive() pid:1 - noSenderProcess:6 sleep done, exit
-|sender_pid:1, msg:6000 |receive() pid:1 - noSenderProcess:5 sleep done, exit
-|sender_pid:1, msg:4000 |receive() pid:1 - noSenderProcess:4 sleep done, exit
-|sender_pid:1, msg:2000 |receive() pid:1 - noSenderProcess:3 sleep done, exit
+|SENDfrompid:1 - destpid:3 - msg:1000|
+destpid:3, senderpid:1 -message send FAIL-senderonqueue:1-|SENDfrompid:1 - destp
+id:4 - msg:2000|
+destpid:4, senderpid:1 -message send FAIL-senderonqueue:1-|SENDfrompid:1 - destp
+id:5 - msg:3000|
+destpid:5, senderpid:1 -message send FAIL-senderonqueue:1-|SENDfrompid:1 - destp
+id:6 - msg:4000|
+destpid:6, senderpid:1 -message send FAIL-senderonqueue:1-sleep1done
+|RECVsenderPID:1, msg:0 |receive() pid:1 - <R2>-messeage has been received-
+p4msg:4000 Process:6 sleep2done, exit
+sleep1done
+|RECVsenderPID:1, msg:0 |receive() pid:1 - <R2>-messeage has been received-
+p3msg:4000 Process:5 sleep2done, exit
+sleep1done
+|RECVsenderPID:1, msg:0 |receive() pid:1 - <R2>-messeage has been received-
+p2msg:4000 Process:4 sleep2done, exit
+sleep1done
+|RECVsenderPID:1, msg:0 |receive() pid:1 - <R2>-messeage has been received-
+p1msg:4000 Process:3 sleep2done, exit
 back at kernel
 ß

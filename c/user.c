@@ -8,13 +8,13 @@ int root_pid;
 void process1(void) {
 	/****************************/
 	int senderpid = 1; //need this to get the sender_pid
-	unsigned long msg = 2000;
+	unsigned long msg = 0;
 	kprintf("Process:%d alive\n", sysgetpid());
 	syssleep(5000);
 	kprintf("sleep1done\n");
 	//receive from root process
 	sysrecv(&senderpid, &msg);
-
+	kprintf("p1msg:%d ", msg);
 	//prints a message that msg received, how long left to sleep
 
 	kprintf("Process:%d sleep2done, exit\n", sysgetpid());
@@ -25,14 +25,14 @@ void process2(void) {
 	/****************************/
 
 	int senderpid = 1; //need this to get the sender_pid
-	unsigned long msg = 4000;
+	unsigned long msg = 0;
 	kprintf("Process:%d alive\n", sysgetpid());
 	syssleep(5000);
 	kprintf("sleep1done\n");
 	//receive from root process
 	//receive from root process
 	sysrecv(&senderpid, &msg);
-
+	kprintf("p2msg:%d ", msg);
 	//prints a message that msg received, how long left to sleep
 
 	kprintf("Process:%d sleep2done, exit\n", sysgetpid());
@@ -43,13 +43,13 @@ void process3(void) {
 	/****************************/
 
 	int senderpid = 1; //need this to get the sender_pid
-	unsigned long msg = 6000;
+	unsigned long msg = 0;
 	kprintf("Process:%d alive\n", sysgetpid());
 	syssleep(5000);
 	kprintf("sleep1done\n");
 	//receive from root process
 	sysrecv(&senderpid, &msg);
-
+	kprintf("p3msg:%d ", msg);
 	//prints a message that msg received, how long left to sleep
 
 	kprintf("Process:%d sleep2done, exit\n", sysgetpid());
@@ -59,13 +59,13 @@ void process3(void) {
 void process4(void) {
 	/****************************/
 	int senderpid = 1; //need this to get the sender_pid
-	unsigned long msg = 8000;
+	unsigned long msg = 0;
 	kprintf("Process:%d alive\n", sysgetpid());
 	syssleep(5000);
 	kprintf("sleep1done\n");
 	//receive from root process
 	sysrecv(&senderpid, &msg);
-
+	kprintf("p4msg:%d ", msg);
 	//prints a message that msg received, how long left to sleep
 
 	kprintf("Process:%d sleep2done, exit\n", sysgetpid());

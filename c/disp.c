@@ -116,6 +116,7 @@ void dispatch(void) {
 				p=next();
 			} else if(p->ret == 0) {
 				kprintf("-messeage has been received-\n");
+				//TODO:ready sender and receiver on queue
 			} else{
 				kprintf("error on receive\n");
 			}

@@ -65,12 +65,12 @@ void outb(unsigned int, unsigned char);
 #define SYS_CREATE      22
 
 //a message package struct, hold message as well as process that is sending/receiving
-typedef struct msgPackage msgP;
-struct msgPackage{
-	pcb *p;
-	unsigned long msg;
-	pcb *nextPackage;
-};
+//typedef struct msgPackage msgP;
+//struct msgPackage{
+//	pcb *p;
+//	unsigned long msg;
+//	pcb *nextPackage;
+//};
 
 /* Structure to track the information associated with a single process */
 typedef struct struct_pcb pcb;

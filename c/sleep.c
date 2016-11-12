@@ -19,12 +19,14 @@ TODO: return error if process already on sleepqueue
  */
 unsigned int sleep(unsigned long millisec){
 
-	//TODO: handle weird input (neg num, out of bounds)
+	//handle weird input (neg num, out of bounds)
+	if(millisec < 0){
+		return -1;
+	}
 	pcb *currentProcess = getCurrentProcess();
 	//kprintf("\nmillisec:%d", millisec);
 	pcb *temp = sleepers;
 	pcb *tempPrev = sleepers;
-	//unsigned long ticks = millisec/10 + (millisec%10)?(1):(0);
 	millisec = millisec/10;
 	unsigned long ticks = millisec;
 	unsigned long tick = millisec;
@@ -55,7 +57,6 @@ unsigned int sleep(unsigned long millisec){
 			tempPrev = temp;
 			temp = temp->next;
 		}
-		//kprintf("\ntempPrevST:%d.CP:%d.dt:%d\n", tempPrev->sleeptime, currentProcess->pid, diffTicks);
 
 		if(temp == sleepers){ //add to beginning
 			sleepers = currentProcess;
@@ -73,7 +74,6 @@ unsigned int sleep(unsigned long millisec){
 			tempPrev->next->next = NULL;
 			tempPrev->next->state = STATE_STOPPED;
 			//kprintf("tempNextVal:%d.",tempPrev->next->sleeptime);
-			//kprintf("+E+");
 			//printSleepQueue();
 		}else if(temp != NULL){ //add to middle
 			//kprintf("next:%d ", tempPrev->next->sleeptime);
@@ -82,7 +82,6 @@ unsigned int sleep(unsigned long millisec){
 			currentProcess->sleeptime = diffTicks;
 			currentProcess->state = STATE_STOPPED;
 			decrementTimes(currentProcess->next, diffTicks);
-			//kprintf("+M+");
 			//printSleepQueue();
 		}else{
 			kprintf("SLEEP ERROR\n");

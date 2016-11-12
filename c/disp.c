@@ -38,12 +38,6 @@ void dispatch(void) {
 		}else{
 //			kprintf("pOK:%d.", p->pid);
 		}
-//		if(head == NULL){
-//			kprintf("headNULL");
-//		}else{
-//			kprintf("headOK:%d,", head->pid);
-//		}
-
 		r = contextswitch(p);
 		switch (r) {
 		case (SYS_CREATE):
@@ -122,13 +116,7 @@ void dispatch(void) {
 				p=next();
 			} else if(p->ret == 0) {
 //				kprintf("-RECV OK-");
-				//get the sender on the ready queue since send was good
-//				ready(getProcessFromPID(*senderPID));
-//				ready(p);
-//				p = next();
-				//continue executing
 
-				//TODO:ready sender and receiver on queue
 			} else{
 				kprintf("error on receive\n");
 			}

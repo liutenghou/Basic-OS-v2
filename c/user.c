@@ -14,16 +14,14 @@ void process1(void) {
 	syssleep(5000);
 	//receive from root process
 	sysrecv(&senderpid, &msg);
-	kprintf("Process:%d message received sleep for: %dmilliseconds\n", pid,
-			msg);
+	kprintf("Process:%d message received sleep for: %d ms\n", pid,msg);
 	syssleep(msg);
+	kprintf("Process:%d sleep1 done, slept:%d ms exit\n", pid, msg);
 
 	sysrecv(&senderpid, &msg);
-	kprintf("Process:%d msg2:%d\n", pid, msg);
+	kprintf("Process:%d message received sleep for: %d ms\n", pid,msg);
 	syssleep(msg);
-
-
-	kprintf("Process:%d sleep2done, exit\n", pid);
+	kprintf("Process:%d sleep2 done, slept:%d ms exit\n", pid, msg);
 	sysstop();
 }
 
@@ -36,15 +34,14 @@ void process2(void) {
 	syssleep(5000);
 	//receive from root process
 	sysrecv(&senderpid, &msg);
-	kprintf("Process:%d message received sleep for: %dmilliseconds\n", pid,
-			msg);
+	kprintf("Process:%d message received sleep for: %d ms\n", pid,msg);
 	syssleep(msg);
+	kprintf("Process:%d sleep1 done, slept:%d ms exit\n", pid, msg);
 
 	sysrecv(&senderpid, &msg);
+	kprintf("Process:%d message received sleep for: %d ms\n", pid,msg);
 	syssleep(msg);
-
-	kprintf("Process:%d msg2:%d\n", pid, msg);
-	kprintf("Process:%d sleep2done, exit\n", pid);
+	kprintf("Process:%d sleep2 done, slept:%d ms exit\n", pid, msg);
 	sysstop();
 }
 
@@ -57,15 +54,14 @@ void process3(void) {
 	syssleep(5000);
 	//receive from root process
 	sysrecv(&senderpid, &msg);
-	kprintf("Process:%d message received sleep for: %dmilliseconds\n", pid,
-			msg);
+	kprintf("Process:%d message received sleep for: %d ms\n", pid,msg);
 	syssleep(msg);
+	kprintf("Process:%d sleep1 done, slept:%d ms exit\n", pid, msg);
 
 	sysrecv(&senderpid, &msg);
+	kprintf("Process:%d message received sleep for: %d ms\n", pid,msg);
 	syssleep(msg);
-
-	kprintf("Process:%d msg2:%d\n", pid, msg);
-	kprintf("Process:%d sleep2done, exit\n", pid);
+	kprintf("Process:%d sleep2 done, slept:%d ms exit\n", pid, msg);
 	sysstop();
 }
 
@@ -78,15 +74,14 @@ void process4(void) {
 	syssleep(5000);
 	//receive from root process
 	sysrecv(&senderpid, &msg);
-	kprintf("Process:%d message received sleep for: %dmilliseconds\n", pid,
-			msg);
+	kprintf("Process:%d message received sleep for: %d ms\n", pid, msg);
 	syssleep(msg);
+	kprintf("Process:%d sleep1 done, slept:%d ms exit\n", pid, msg);
 
 	sysrecv(&senderpid, &msg);
+	kprintf("Process:%d message received sleep for: %d ms\n", pid,msg);
 	syssleep(msg);
-
-	kprintf("Process:%d msg2:%d\n", pid, msg);
-	kprintf("Process:%d sleep2done, exit\n", pid);
+	kprintf("Process:%d sleep2 done, slept:%d ms exit\n", pid, msg);
 	sysstop();
 }
 
@@ -122,7 +117,7 @@ void root(void) {
 	syssend(procPID1, 20000);
 	syssend(procPID4, 27000);
 
-	sysputs("END");
+
 	int i;
 	for (i = 0; i;) {
 		sysyield();

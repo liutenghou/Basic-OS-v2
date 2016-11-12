@@ -99,6 +99,7 @@ void dispatch(void) {
 				ready(p);
 				pcb *temp = takeOffBlockedArray(toPID);
 //				kprintf("poffA:%d ",temp->pid);
+
 				ready(temp);
 				p = next();
 			}

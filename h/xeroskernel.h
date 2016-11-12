@@ -85,6 +85,7 @@ struct struct_pcb {
 	/* if process interrupted because of system*/
 	/* call                                    */
 	unsigned long msg; //received message from another process
+	int *msg2;
 	long args;
 	pcb *sender;
 	pcb *nextSender;

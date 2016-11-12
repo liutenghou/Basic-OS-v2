@@ -1,9 +1,457 @@
+-------------------------------------------------------------------
+1) Test Send 1
+• Purpose: 
+    Test one process sending to two processes
+• How Test Was Performed: 
+    Root sends a message to testprocess1 and testprocess 2. 
+    They both output the message that was send from root:
+• Output:
+    p:3 msg:300 p:4 msg:400
+    
+• user.c code:
+void testProcess1(void){
+    int msg = 0;
+    int rootpid = 1;
+    int thispid = sysgetpid();
 
-This file is to include your testing documentation. The file is to be
-in plain text ASCII and properly spaced and edited so that when it is
-viewed on a Linux machine it is readable. Not all ASCII files created
-on a Windows machine display as expected due to the differences with
-respect to how new lines and carriage returns are treated. Line widths
-are to be limited to 80 characters.
+    sysrecv(&rootpid, &msg);
+    kprintf("p:%d msg:%d ", thispid, msg);
+    sysstop();
+}
+
+void testProcess2(void){
+    int msg = 0;
+    int rootpid = 1;
+    int thispid = sysgetpid();
+
+    sysrecv(&rootpid, &msg);
+    kprintf("p:%d msg:%d ", thispid, msg);
+    sysstop();
+}
+void testProcess3(void){
+    int msg = 0;
+    int msg2 = 0;
+
+    int pid4 = 4;
+    int pid3 = 3;
+
+    sysstop();
+}
+
+• Test Pass
+
+-------------------------------------------------------------------
+2) Test Send 2
+• Purpose: 
+    Test two processes both sending to same process
+• How Test Was Performed: 
+    Root process and testprocess2 both send to testprocess1
+    
+• Output:
+p:3 msg:300 p:3 msg:400
+
+• user.c Code:
+
+//Uncomment these three processes for testing
+void testProcess1(void){
+    int msg = 0;
+    int pid = 1;
+    int thispid = sysgetpid();
+
+    sysrecv(&pid, &msg);
+    kprintf("p:%d msg:%d ", thispid, msg);
+
+    sysrecv(&pid, &msg);
+    kprintf("p:%d msg:%d ", thispid, msg);
+    sysstop();
+}
+
+void testProcess2(void){
+    int msg = 0;
+    int rootpid = 1;
+    int thispid = sysgetpid();
+
+    syssend(3, 400);
+
+    sysstop();
+}
+
+void root(void) {
+    int t1, t2, t0;
+    t0 = sysgetpid();
+
+    t1 = syscreate(&testProcess1, 4096);
+    t2 = syscreate(&testProcess2, 4096);
+
+    kprintf("rootPID:%d, t1PID:%d, t2PID:%d\n", t0,t1,t2);
+    //rootPID:1, t1PID:3, t2PID:4, t3PID:5
+
+    syssend(3, 300);
+    int i;
+    for (i = 0; i;) {
+        sysyield();
+    }
+    sysstop();
+}
+
+• Test Pass
+-------------------------------------------------------------------
+3) Test Receive 1
+• Purpose: 
+    Test receive from any process
+
+• How Test Was Performed: 
+    Receive from pid=0
+    
+• output:
+p:3 msg:300
+
+• user.c code
+
+void testProcess1(void){
+    int msg = 0;
+    int pid = 0;
+    int thispid = sysgetpid();
+
+    sysrecv(&pid, &msg);
+    kprintf("p:%d msg:%d ", thispid, msg);
+    sysstop();
+}
+
+void testProcess2(void){
+    int msg = 0;
+    int rootpid = 1;
+    int thispid = sysgetpid();
+
+    syssend(3, 400);
+
+    sysstop();
+}
+
+void root(void) {
+    int t1, t2, t0;
+    t0 = sysgetpid();
+
+    t1 = syscreate(&testProcess1, 4096);
+    t2 = syscreate(&testProcess2, 4096);
+
+    kprintf("rootPID:%d, t1PID:%d, t2PID:%d\n", t0,t1,t2);
+    //rootPID:1, t1PID:3, t2PID:4, t3PID:5
+
+    syssend(3, 300);
+    int i;
+    for (i = 0; i;) {
+        sysyield();
+    }
+    sysstop();
+}
+
+• Test Pass
+-------------------------------------------------------------------
+4) Test Receive 2
+• Purpose: 
+    Test multiple receives with no sender to see that the
+    kernel can properly block without crashing
+• How Test Was Performed: 
+    testprocess1 was set to receive multiple times
+
+• Output
+    p:3 msg:300
+
+• user.c code
+void testProcess1(void){
+    int msg = 0;
+    int pid = 0;
+    int thispid = sysgetpid();
+
+    sysrecv(&pid, &msg);
+    sysrecv(&pid, &msg);
+    sysrecv(&pid, &msg);
+    sysrecv(&pid, &msg);
+    sysrecv(&pid, &msg);
+    kprintf("p:%d msg:%d ", thispid, msg);
+    sysstop();
+}
+
+void testProcess2(void){
+    int msg = 0;
+    int rootpid = 1;
+    int thispid = sysgetpid();
+
+    syssend(3, 400);
+
+    sysstop();
+}
+
+void root(void) {
+    int t1, t2, t0;
+    t0 = sysgetpid();
+
+    t1 = syscreate(&testProcess1, 4096);
+    t2 = syscreate(&testProcess2, 4096);
+
+    kprintf("rootPID:%d, t1PID:%d, t2PID:%d\n", t0,t1,t2);
+    //rootPID:1, t1PID:3, t2PID:4, t3PID:5
+
+    syssend(3, 300);
+    int i;
+    for (i = 0; i;) {
+        sysyield();
+    }
+    sysstop();
+}
+
+• Test Pass
+-------------------------------------------------------------------
+5) Send Failure
+• Purpose: 
+    Test deadlock resolution when p1 sends to p2
+    and p2 sends to p1.
+    This kernel is able to resolve conflicts when
+    this specific deadlock occurs.
+• How Test Was Performed:
+    root sends to testprocess 1, then testprocess1
+    sends to root, then testprocess1 receives from root
+    
+• Output:
+    received:1, msg:300
+    
+• user.c code
+
+void testProcess1(void){
 
 
+    int msg = 0;
+    int pid = 1;
+    syssend(1, 100);
+    sysrecv(&pid, &msg);
+    kprintf("received:%d, msg:%d", pid, msg);
+
+    sysstop();
+
+
+}
+
+
+void root(void) {
+    int t1, t2, t0;
+    t0 = sysgetpid();
+
+    t1 = syscreate(&testProcess1, 4096);
+
+    kprintf("rootPID:%d, t1PID:%d\n", t0,t1);
+    //rootPID:1, t1PID:3, t2PID:4, t3PID:5
+
+    syssend(3, 300);
+    int i;
+    for (i = 0; i;) {
+        sysyield();
+    }
+    sysstop();
+}
+
+• Test Pass 
+
+-------------------------------------------------------------------
+6) Receive Failure 1
+
+• Purpose: 
+    Test deadlock when 
+    p1 receives from p2
+    and p2 receives from p3
+    and p3 receives from p1
+• How Test Was Performed: 
+    root receives from testprocess1
+    then testprocess1 receives from testprocess2
+    then testprocess2 receives from root
+    then try send to see if root can still send
+    
+• Output
+    N/A
+    If deadlock did not occur, output would be printed by:
+    kprintf("p:%d msg:%d ", thispid, msg);
+    
+• user.c code
+
+void testProcess1(void){ //3
+    int msg = 0;
+    int pid = 4;
+    int thispid = sysgetpid();
+
+    sysrecv(&pid, &msg);
+    kprintf("p:%d msg:%d ", thispid, msg);
+    sysstop();
+}
+
+void testProcess2(void){ //4
+    int msg = 0;
+    int pid = 1;
+    int thispid = sysgetpid();
+
+    sysrecv(&pid, &msg);
+    kprintf("p:%d msg:%d ", thispid, msg);
+    sysstop();
+}
+
+void root(void) { //1
+    int t1, t2, t0;
+    t0 = sysgetpid();
+    int msg = 0;
+    int pid = 3;
+
+    t1 = syscreate(&testProcess1, 4096);
+    t2 = syscreate(&testProcess2, 4096);
+
+    kprintf("rootPID:%d, t1PID:%d, t2PID:%d\n", t0,t1,t2);
+    //rootPID:1, t1PID:3, t2PID:4
+
+    sysrecv(&pid, &msg);
+    syssend(3, 100);
+    int i;
+    for (i = 0; i;) {
+        sysyield();
+    }
+    sysstop();
+}
+
+• Test Pass
+-------------------------------------------------------------------
+7) Receive Failure 2
+
+• Purpose: 
+    Test deadlock when 
+    p1 sends to p2
+    p2 receives from p3
+    p3 sends to p1
+    p1 receives from p3
+    
+• How Test Was Performed:
+    root sends to testprocess1
+    rootprocess1 receives from rootprocess2
+    rootprocess2 sends to root
+    root receives from rootprocess2
+    
+• Output
+    N/A
+    If test failed, then this line:
+    kprintf("msg:%d ", msg);
+    inside root would print,
+    but it does not.
+    
+• user.c code
+
+void testProcess1(void){ //3
+    int msg = 0;
+    int pid = 4;
+    int thispid = sysgetpid();
+
+    sysrecv(&pid, &msg);
+    kprintf("p:%d msg:%d ", thispid, msg);
+    sysstop();
+}
+
+void testProcess2(void){ //4
+    int msg = 0;
+    int pid = 3;
+    int thispid = sysgetpid();
+
+    sysrecv(&pid, &msg);
+    syssend(1, 100);
+    kprintf("p:%d msg:%d ", thispid, msg);
+    sysstop();
+}
+
+void root(void) { //1
+    int t1, t2, t0;
+    t0 = sysgetpid();
+    int msg = 0;
+    int pid = 3;
+
+    t1 = syscreate(&testProcess1, 4096);
+    t2 = syscreate(&testProcess2, 4096);
+
+    kprintf("rootPID:%d, t1PID:%d, t2PID:%d\n", t0,t1,t2);
+    //rootPID:1, t1PID:3, t2PID:4
+    syssend(4, 100);
+    sysrecv(&pid, &msg);
+
+    kprintf("msg:%d ", msg);
+    int i;
+    for (i = 0; i;) {
+        sysyield();
+    }
+    sysstop();
+}
+
+•Test pass
+-------------------------------------------------------------------
+8) Time Sharing
+• Purpose: 
+    Test that two processes can share processing time
+
+• How Test Was Performed:
+    testprocess1 and testprocess2 are created in root
+    testprocess1 and testprocess2 prints 1 and 2 respectively
+    we see both 1 and 2 printed at intervals
+    
+• Output
+11111111111111111111111111111111111111111111111111111222222222222222222222222222
+22222222222222222222222222222222222222222222222222222222222222222222222222222222
+22222222222222222222222222222222222222222222222222222222222222222222222222222222
+22222222222222222222222222222222222221111111111111111111111111111111111111111111
+11111111111111111111111111111111111111111111111111111111111111111111111111111111
+11111111111111111111111111111111111111111111111111111111111111111111111111111111
+11111111111111111111222222222222222222222222222222222222222222222222222222222222
+22222222222222222222222222222222222222222222222222222222222222222222222222222222
+22222222222222222222222222222222222222222222222222222222222222222222222222222222
+22221111111111111111111111111111111111111111111111111111111111111111111111111111
+11111111111111111111111111111111111111111111111111111111111111111111111111111111
+11111111111111111111111111111111111111111111111111111111111111111111111111111222
+22222222222222222222222222222222222222222222222222222222222222222222222222222222
+22222222222222222222222222222222222222222222222222222222222222222222222222222222
+22222222222222222222222222222222222222222222222222222222222221111111111111111111
+11111111111111111111111111111111111111111111111111111111111111111111111111111111
+11111111111111111111111111111111111111111111111111111111111111111111111111111111
+11111111111111111111111111111111111111111111122222222222222222222222222222222222
+22222222222222222222222222222222222222222222222222222222222222222222222222222222
+22222222222222222222222222222222222222222222222222222222222222222222222222222222
+22222222222222222222222222222211111111111111111111111111111111111111111111111111
+11111111111111111111111111111111111111111111111111111111111111111111111111111111
+11111111111111111111111111111111111111111111111111111111111111111111111111111111
+11111111111112222222222222222222222222222222222222222222222222222222222222222222
+22222222222222222222222222222222222222222222222222222222222
+
+• user.c code
+
+void testProcess1(void){ //3
+    while(1)kprintf("1");
+    sysstop();
+}
+
+void testProcess2(void){ //4
+    while(1)kprintf("2");
+    sysstop();
+}
+
+void root(void) { //1
+    int t1, t2, t0;
+    t0 = sysgetpid();
+    int msg = 0;
+    int pid = 3;
+
+    t1 = syscreate(&testProcess1, 4096);
+    t2 = syscreate(&testProcess2, 4096);
+
+    kprintf("rootPID:%d, t1PID:%d, t2PID:%d\n", t0,t1,t2);
+    //rootPID:1, t1PID:3, t2PID:4
+
+    int i;
+    for (i = 0; i;) {
+        sysyield();
+    }
+    sysstop();
+}
+
+• Test Pass
+    
+     

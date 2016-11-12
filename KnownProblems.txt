@@ -1,5 +1,34 @@
-This ASCII file is to contain a description of any known problems or issues with your 
-assignment. If you know something doesn't work or you assignment is incomplete document
-it here so that the markers don't waste time trying to figure out if there is 
-some sort of build problem or issue when it is simply the case that things aren't
-working.
+0) 
+Output should be:
+create inited
+RootPID:1, P1PID:3, P2PID:4, P3PID:5, P4PID:6
+Process:1 (root) alive
+Process:3 alive
+Process:4 alive
+Process:5 alive
+Process:6 alive
+Process:6 message received sleep for: 4000 ms
+Process:5 message received sleep for: 3000 ms
+Process:4 message received sleep for: 2000 ms
+Process:3 message received sleep for: 1000 ms
+Process:3 sleep1 done, slept:1000 ms exit
+Process:4 sleep1 done, slept:2000 ms exit
+Process:5 sleep1 done, slept:3000 ms exit
+Process:6 sleep1 done, slept:4000 ms exit
+kernel: done sleep
+Process:5 message received sleep for: 10000 ms
+Process:4 message received sleep for: 7000 ms
+Process:3 message received sleep for: 20000 ms
+Process:6 message received sleep for: 27000 ms
+Process:4 sleep2 done, slept:7000 ms exit
+Process:5 sleep2 done, slept:10000 ms exit
+Process:3 sleep2 done, slept:20000 ms exit
+Process:6 sleep2 done, slept:27000 ms exit
+
+However, the times that the output is displayed can vary sometimes, with
+the 7000 sleep taking longer sometimes.
+
+1) We assume that rootPID is 1 
+
+2) receive call in root process is not yielding properly, not sure why.
+

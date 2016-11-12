@@ -1,25 +1,25 @@
-CPSC 415, 2016W1
-32 Bit Xeros 0.01
-Located at: 0 to 6984
-Max addr is 4194303 3fffff
-memory inited
-dispatcher inited
-context inited
 create inited
 RootPID:1, P1PID:3, P2PID:4, P3PID:5, P4PID:6
 Process:1 (root) alive
-|SENDer:1,destpid:3|<S1><S3>destpid:3, senderpid:1 -SEND BLOCK-|SENDer:1,destpid
-:4|<S1><S3>destpid:4, senderpid:1 -SEND BLOCK-|SENDer:1,destpid:5|<S1><S3>destpi
-d:5, senderpid:1 -SEND BLOCK-|SENDer:1,destpid:6|<S1><S3>destpid:6, senderpid:1
--SEND BLOCK-(p4sleep1done)|RECVsenderPID:1, msg:0 |<R6><R7>-RECV OK-(p4msg:4000)
-p3sleep1 done |RECVsenderPID:1, msg:0 |<R6><R7>-RECV OK-p3msg:3000 (p2sleep1done
-)|RECVsenderPID:1, msg:0 |<R6><R7>-RECV OK-(p2msg:2000)(p1sleep1done)|RECVsender
-PID:1, msg:0 |<R6><R7>-RECV OK-(p1msg:1000)|RECVsenderPID:1, msg:1000 |<R6><R11>
--REC BLOCK-ONA:92496 |RECVsenderPID:1, msg:2000 |<R6><R11>-REC BLOCK-ONA:108880
-|RECVsenderPID:1, msg:3000 |<R6><R11>-REC BLOCK-ONA:125264 |RECVsenderPID:1, msg
-:4000 |<R6><R11>-REC BLOCK-ONA:141648 kernel: done sleep
-|SENDer:1,destpid:5|<S4>-SEND OK--message:10000-poffA:1744836000 |SENDer:1,destp
-id:4|<S4>-SEND OK--message:7000-poffA:1744836000 |SENDer:1,destpid:3|<S4>-SEND O
-K--message:20000-poffA:3 |SENDer:1,destpid:6|<S4>-SEND OK--message:27000-poffA:1
-744836000 ENDpNULLOut of processes: dying
+Process:3 alive
+Process:4 alive
+Process:5 alive
+Process:6 alive
+Process:6 message received sleep for: 4000 ms
+Process:5 message received sleep for: 3000 ms
+Process:4 message received sleep for: 2000 ms
+Process:3 message received sleep for: 1000 ms
+Process:3 sleep1 done, slept:1000 ms exit
+Process:4 sleep1 done, slept:2000 ms exit
+Process:5 sleep1 done, slept:3000 ms exit
+Process:6 sleep1 done, slept:4000 ms exit
+kernel: done sleep
+Process:5 message received sleep for: 10000 ms
+Process:4 message received sleep for: 7000 ms
+Process:3 message received sleep for: 20000 ms
+Process:6 message received sleep for: 27000 ms
+Process:4 sleep2 done, slept:7000 ms exit
+Process:5 sleep2 done, slept:10000 ms exit
+Process:3 sleep2 done, slept:20000 ms exit
+Process:6 sleep2 done, slept:27000 ms exit
 ß

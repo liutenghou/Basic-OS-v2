@@ -162,6 +162,8 @@ void killprocess(int pid);
 
 int send(int toPID, unsigned long msg);
 int receive(int *sender_pid, unsigned long *msg);
+void putOnBlockedArray(pcb *p);
+pcb* takeOffBlockedArray(int pid);
 
 //helpers
 int getCurrentPID(void);

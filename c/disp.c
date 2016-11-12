@@ -10,8 +10,7 @@ static pcb *tail = NULL;
 // next process in the queue
 pcb *p;
 
-static pcb *blockedQ = NULL;
-static pcb *blockedQTail = NULL;
+static pcb* blocked[MAX_PROC];
 
 void dispatch(void) {
 	/********************************/
@@ -98,7 +97,10 @@ void dispatch(void) {
 				kprintf("-SEND OK-");
 				kprintf("-message:%d-", getProcessFromPID(toPID)->msg);
 				ready(p);
-				ready(getProcessFromPID(toPID));
+				pcb *temp = takeOffBlockedArray(toPID);
+				kprintf("poffA:%d ",temp->pid);
+				ready(temp);
+				p = next();
 			}
 			break;
 		case (SYS_RECEIVE):
@@ -115,7 +117,7 @@ void dispatch(void) {
 //				kprintf("msg not recvd senderqueue:%d-",p->nextSender->pid);
 				kprintf("-REC BLOCK-");
 				p->state = STATE_STOPPED;
-				blockedReady(p);
+				putOnBlockedArray(p);
 				p=next();
 			} else if(p->ret == 0) {
 				kprintf("-RECV OK-");
@@ -165,6 +167,10 @@ extern void dispatchinit(void) {
 
 	//bzero( proctab, sizeof( pcb ) * MAX_PROC );
 	memset(proctab, 0, sizeof(pcb) * MAX_PROC);
+	int i;
+	for(i=0; i<MAX_PROC; i++){
+		blocked[i] = NULL;
+	}
 }
 
 //sets a process p
@@ -182,32 +188,31 @@ extern void ready(pcb *p) {
 	tail = p;
 }
 
-void putOnBlockedQueue(pcb *p){
+void putOnBlockedArray(pcb *p){
 	/*******************************/
 		p->next = NULL;
 		p->state = STATE_BLOCKED;
-
-		if (blockedQTail) {
-			blockedQTail->next = p; //put at back of ready queue
-		} else {
-			blockedQ = p; //only process, put itself at head
+		int i;
+		for(i=0; i<MAX_PROC; i++){
+			if(blocked[i] == NULL){
+				blocked[i] = p;
+				break;
+			}
 		}
-		blockedQTail = p;
+		//kprintf("ONA:%d ",blocked[i]->pid);
 }
 
-pcb* takeOffBlockedQueue(void){
-	pcb *p = NULL;
-	p = blockedQ;
-	if (p) {
-		blockedQ = p->next;
-		if (!blockedQ) { //if no other processes beside head
-			blockedQTail = NULL;
+pcb* takeOffBlockedArray(int pid){
+	int i;
+	pcb *temp;
+	for (i=0; i<MAX_PROC; i++){
+		if(blocked[i]->pid == pid){
+			temp = blocked[i];
+			blocked[i] = NULL;
+			return temp;
 		}
 	}
-	if (p == NULL) {
-		kprintf("bNULL");
-	}
-	return (p);
+	return NULL;
 }
 
 //puts in back of readyqueue without unblocking

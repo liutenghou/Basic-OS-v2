@@ -65,7 +65,9 @@ int send(int destPID, unsigned long msg) {
 	} else {
 		kprintf("<S4>");
 		//send message
-		//check receivingqueue
+
+		destP->msg = msg;
+		destP->sender = senderP;
 
 		//ready(destP);
 		//ready(senderP);
@@ -201,9 +203,10 @@ int receive(int *senderPID, unsigned long *msg) {
 		}else{
 			kprintf("<R11>");
 			//put receiver on sender's receiver queue
-			senderProcess->receiver = receiverProcess;
+			senderProcess->msg = *msg;
 			//block receiver
 			receiverProcess->state = STATE_BLOCKED;
+
 			return -4;
 		}
 		//check also if sender is blocked/waiting to send, else block self

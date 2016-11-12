@@ -1,3 +1,11 @@
+CPSC 415, 2016W1
+32 Bit Xeros 0.01
+Located at: 0 to 6984
+Max addr is 4194303 3fffff
+memory inited
+dispatcher inited
+context inited
+create inited
 RootPID:1, P1PID:3, P2PID:4, P3PID:5, P4PID:6
 Process:1 (root) alive
 |SENDer:1,destpid:3|<S1><S3>destpid:3, senderpid:1 -SEND BLOCK-|SENDer:1,destpid
@@ -7,19 +15,11 @@ d:5, senderpid:1 -SEND BLOCK-|SENDer:1,destpid:6|<S1><S3>destpid:6, senderpid:1
 p3sleep1 done |RECVsenderPID:1, msg:0 |<R6><R7>-RECV OK-p3msg:3000 (p2sleep1done
 )|RECVsenderPID:1, msg:0 |<R6><R7>-RECV OK-(p2msg:2000)(p1sleep1done)|RECVsender
 PID:1, msg:0 |<R6><R7>-RECV OK-(p1msg:1000)|RECVsenderPID:1, msg:1000 |<R6><R11>
--REC BLOCK-[3][3][3][3][3][3][3][3][3][3][3][3][3][3][3][3][3][3][3][3][3][3][3]
-[3][3][3][3][3][3][3][3][3][3][3](p1msg2:1000)|RECVsenderPID:1, msg:2000 |<R6><R
-11>-REC BLOCK-[4][4][4][4][4][4][4][4][4][4][4][4][4][4][4][4][4][4][4][4][4][4]
-[4][4][4][4][4][4][4][4][4][4][4][4](p2msg2:2000)(Process:4 sleep2done, exit
-)(Process:3 sleep2done, exit
-)|RECVsenderPID:1, msg:3000 |<R6><R11>-REC BLOCK-[5][5][5][5][5][5][5][5][5][5][
-5][5][5][5][5][5][5][5][5][5][5][5][5][5][5][5][5][5][5][5][5][5][5][5][5][5]3ms
-g2:3000 |RECVsenderPID:1, msg:4000 |<R6><R11>-REC BLOCK-[6][6][6][6][6][6][6][6]
-[6][6][6][6][6][6][6][6][6][6][6][6][6][6][6][6][6][6][6][6][6][6][6][6][6][6][6
-](p4msg2:4000)Process:5 sleep2done, exit
-(Process:6 sleep2done, exit
-)kernel: done sleep
-|SENDer:1,destpid:5|<S1><S3>destpid:5, senderpid:1 -SEND BLOCK-|SENDer:1,destpid
-:4|<S1><S3>destpid:4, senderpid:1 -SEND BLOCK-|SENDer:1,destpid:3|<S1><S3>destpi
-d:3, senderpid:1 -SEND BLOCK-|SENDer:1,destpid:6|<S1><S3>destpid:6, senderpid:1
--SEND BLOCK-ENDß
+-REC BLOCK-ONA:92496 |RECVsenderPID:1, msg:2000 |<R6><R11>-REC BLOCK-ONA:108880
+|RECVsenderPID:1, msg:3000 |<R6><R11>-REC BLOCK-ONA:125264 |RECVsenderPID:1, msg
+:4000 |<R6><R11>-REC BLOCK-ONA:141648 kernel: done sleep
+|SENDer:1,destpid:5|<S4>-SEND OK--message:10000-poffA:1744836000 |SENDer:1,destp
+id:4|<S4>-SEND OK--message:7000-poffA:1744836000 |SENDer:1,destpid:3|<S4>-SEND O
+K--message:20000-poffA:3 |SENDer:1,destpid:6|<S4>-SEND OK--message:27000-poffA:1
+744836000 ENDpNULLOut of processes: dying
+ß

@@ -10,6 +10,9 @@ static pcb *tail = NULL;
 // next process in the queue
 pcb *p;
 
+static pcb *blockedQ = NULL;
+static pcb *blockedQTail = NULL;
+
 void dispatch(void) {
 	/********************************/
 
@@ -51,16 +54,11 @@ void dispatch(void) {
 			p->ret = create(fp, stack);
 			break;
 		case (SYS_YIELD):
-			ready(p);
+
 			p->ret = 0; //arbitrary value
+			ready(p);
 			p = next();
 			//kprintf("{%d}", p->pid);
-			if(p->state == STATE_STOPPED){
-				blockedReady(p);
-				kprintf("[%d]", p->pid);
-				p = next();
-			}
-
 			break;
 		case (SYS_STOP):
 			p->state = STATE_STOPPED;
@@ -122,7 +120,9 @@ void dispatch(void) {
 			} else if(p->ret == 0) {
 				kprintf("-RECV OK-");
 				//get the sender on the ready queue since send was good
-				ready(getProcessFromPID(senderPID));
+//				ready(getProcessFromPID(*senderPID));
+//				ready(p);
+//				p = next();
 				//continue executing
 
 				//TODO:ready sender and receiver on queue
@@ -180,6 +180,34 @@ extern void ready(pcb *p) {
 		head = p; //only process, put itself at head
 	}
 	tail = p;
+}
+
+void putOnBlockedQueue(pcb *p){
+	/*******************************/
+		p->next = NULL;
+		p->state = STATE_BLOCKED;
+
+		if (blockedQTail) {
+			blockedQTail->next = p; //put at back of ready queue
+		} else {
+			blockedQ = p; //only process, put itself at head
+		}
+		blockedQTail = p;
+}
+
+pcb* takeOffBlockedQueue(void){
+	pcb *p = NULL;
+	p = blockedQ;
+	if (p) {
+		blockedQ = p->next;
+		if (!blockedQ) { //if no other processes beside head
+			blockedQTail = NULL;
+		}
+	}
+	if (p == NULL) {
+		kprintf("bNULL");
+	}
+	return (p);
 }
 
 //puts in back of readyqueue without unblocking

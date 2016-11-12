@@ -114,6 +114,7 @@ update internal counters
 void tick(void){
 
 	if (sleepers != NULL) {
+		//kprintf(".");
 		if (sleepers->sleeptime <= 0) {
 			if (sleepers->next != NULL) {
 				pcb *temp = sleepers->next;

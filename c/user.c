@@ -116,6 +116,18 @@ void root(void) {
 	syssend(procPID2, 7000);
 	syssend(procPID1, 20000);
 	syssend(procPID4, 27000);
+//
+//	int proc3 = procPID3;
+//	int proc4 = procPID4;
+//	unsigned long *msg1=0;
+//	unsigned long *msg2=0;
+
+//	int ret4 = sysrecv(&proc4,&msg2);
+//	kprintf("process 4 return:%d\n", ret4);
+//
+//	int ret3 = sysrecv(&proc3,&msg1);
+//	kprintf("process 3 return:%d\n", ret3);
+
 
 
 	int i;

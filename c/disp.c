@@ -95,7 +95,7 @@ void dispatch(void) {
 
 			} else { //msg sent successfully, place both on ready queue
 //				kprintf("-SEND OK-");
-				kprintf("-message:%d-", getProcessFromPID(toPID)->msg);
+				//kprintf("-message:%d-", getProcessFromPID(toPID)->msg);
 				ready(p);
 				pcb *temp = takeOffBlockedArray(toPID);
 //				kprintf("poffA:%d ",temp->pid);

@@ -79,7 +79,7 @@ extern int syssend(int dest_pid, unsigned long msg){
 	return syscall(SYS_SEND, dest_pid, msg);
 }
 
-extern int sysrecv(int *from_pid, unsigned long * msg){
+extern int sysrecv(int *from_pid, unsigned long *msg){
 	return syscall(SYS_RECEIVE, from_pid, msg);
 }
 

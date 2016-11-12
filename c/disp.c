@@ -86,19 +86,19 @@ void dispatch(void) {
 
 			p->ret = send(toPID, msg);
 			if(p->ret < 0){
-				kprintf("-SEND ERR-");
+//				kprintf("-SEND ERR-");
 				break;
 			}
 			if (p->state == STATE_BLOCKED) { //message not sent
 //				kprintf("-message send FAIL-senderonqueue:%d-",getProcessFromPID(toPID)->sender->pid);
-				kprintf("-SEND BLOCK-");
+//				kprintf("-SEND BLOCK-");
 
 			} else { //msg sent successfully, place both on ready queue
-				kprintf("-SEND OK-");
+//				kprintf("-SEND OK-");
 				kprintf("-message:%d-", getProcessFromPID(toPID)->msg);
 				ready(p);
 				pcb *temp = takeOffBlockedArray(toPID);
-				kprintf("poffA:%d ",temp->pid);
+//				kprintf("poffA:%d ",temp->pid);
 				ready(temp);
 				p = next();
 			}
@@ -115,12 +115,12 @@ void dispatch(void) {
 				break;
 			}else if (p->ret == -4) { //receiver blocked
 //				kprintf("msg not recvd senderqueue:%d-",p->nextSender->pid);
-				kprintf("-REC BLOCK-");
+//				kprintf("-REC BLOCK-");
 				p->state = STATE_STOPPED;
 				putOnBlockedArray(p);
 				p=next();
 			} else if(p->ret == 0) {
-				kprintf("-RECV OK-");
+//				kprintf("-RECV OK-");
 				//get the sender on the ready queue since send was good
 //				ready(getProcessFromPID(*senderPID));
 //				ready(p);

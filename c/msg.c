@@ -12,7 +12,7 @@
  *
  */
 int send(int destPID, unsigned long msg) {
-	kprintf("|SENDer:%d,destpid:%d|", sysgetpid(), destPID);
+	//kprintf("|SENDer:%d,destpid:%d|", sysgetpid(), destPID);
 
 
 	int senderPID = sysgetpid();
@@ -54,7 +54,7 @@ int send(int destPID, unsigned long msg) {
 			temp = senderP;
 		} else { //only sender
 			kprintf("<S3>");
-			kprintf("destpid:%d, senderpid:%d ", destP->pid, senderP->pid);//add senderP to receiver senderqueue
+			//kprintf("destpid:%d, senderpid:%d ", destP->pid, senderP->pid);//add senderP to receiver senderqueue
 			destP->msg = msg;
 			destP->sender = senderP;
 		}
@@ -80,12 +80,12 @@ int send(int destPID, unsigned long msg) {
 //returns -4 if receiver blocked, waiting on sender
 int receive(int *senderPID, unsigned long *msg) {
 
-	kprintf("|RECVsenderPID:%d, msg:%d |", *senderPID, *msg);
+	//kprintf("|RECVsenderPID:%d, msg:%d |", *senderPID, *msg);
 	pcb *receiverProcess = getCurrentProcess();
 
 	// receiving process cannot receive from itself
 	if (receiverProcess->pid == *senderPID) {
-		kprintf("error receiver():cannot receive from self\n");
+		//kprintf("error receiver():cannot receive from self\n");
 		return -2;
 	}
 	//check if sender process exists
@@ -93,14 +93,14 @@ int receive(int *senderPID, unsigned long *msg) {
 	if(*senderPID != 0){
 		senderProcess = getProcessFromPID(*senderPID);
 		if (senderProcess == NULL) {
-			kprintf("error receiver(): no process found for pid\n");
+			//kprintf("error receiver(): no process found for pid\n");
 			return -1;
 		}
 	}
 
 	//other errors return -3
 	if(*senderPID<0){
-		kprintf("error receiver()\n");
+		//kprintf("error receiver()\n");
 		return -3;
 	}
 
@@ -108,23 +108,23 @@ int receive(int *senderPID, unsigned long *msg) {
 
 	//receive from any,
 	if (*senderPID == 0) {
-		kprintf("<R1>");
+		//kprintf("<R1>");
 		//check sender queue, if nothing on it block
 		if (receiverProcess->sender == NULL) {
-			kprintf("<R2>");
+			//kprintf("<R2>");
 			receiverProcess->state = STATE_BLOCKED;
 			return -4;
 			//do receive again
 		//NOTE: if on sending queue, sender must be blocked
 		//sending queue not empty, transfer message immediately
 		} else {
-			kprintf("<R3>");
+			//kprintf("<R3>");
 			//receive message
 			*msg = receiverProcess->msg;
 			*senderPID = receiverProcess->sender->pid;
 			//sending process has to be blocked, unblock it, back on readyqueue
 			if(receiverProcess->sender->pid != 1){
-				kprintf("<R4>");
+				//kprintf("<R4>");
 				ready(receiverProcess->sender);
 			}
 			//remove sender from senderqueue
@@ -132,7 +132,7 @@ int receive(int *senderPID, unsigned long *msg) {
 
 			//move next sender if exists
 			if (receiverProcess->nextSender != NULL) {
-				kprintf("<R5>");
+				//kprintf("<R5>");
 				receiverProcess->sender = receiverProcess->nextSender;
 				receiverProcess->nextSender =
 						receiverProcess->nextSender->nextSender;
@@ -141,16 +141,16 @@ int receive(int *senderPID, unsigned long *msg) {
 		}
 
 	}else{
-		kprintf("<R6>");
+		//kprintf("<R6>");
 		//check sender, see if on senderqueue, if so receive it
 		if(receiverProcess->sender->pid == *senderPID){
-			kprintf("<R7>");
+			//kprintf("<R7>");
 			*msg = receiverProcess->msg;
 			*senderPID = receiverProcess->sender->pid;
 			//sending process was be blocked, unblock it, back on readyqueue
 			//if root pid, don't do this
 			if(receiverProcess->sender->pid != 1){
-				kprintf("<R8>");
+				//kprintf("<R8>");
 				ready(receiverProcess->sender);
 			}
 
@@ -164,12 +164,12 @@ int receive(int *senderPID, unsigned long *msg) {
 			}
 
 		}else if(receiverProcess->nextSender != NULL){ //check rest of queue
-			kprintf("<R9>");
-			kprintf("hasNextSender ");
+			//kprintf("<R9>");
+			//kprintf("hasNextSender ");
 			pcb *temp = receiverProcess->nextSender;
 			while(temp != NULL){
 				if(temp->pid == *senderPID){
-					kprintf("<R3>");
+					//kprintf("<R3>");
 					*msg = receiverProcess->msg;
 					*senderPID = receiverProcess->sender->pid;
 					//sending process has to be blocked, unblock it, back on readyqueue
@@ -192,8 +192,8 @@ int receive(int *senderPID, unsigned long *msg) {
 				}
 			}
 			if(temp->pid != *senderPID){ //no sender found in next queue
-				kprintf("<R10>");
-				kprintf("noSenderFoundInNextQueue ");
+				//kprintf("<R10>");
+				//kprintf("noSenderFoundInNextQueue ");
 				//put receiver on sender's receiver queue
 				senderProcess->receiver = receiverProcess;
 				//block receiver
@@ -201,7 +201,7 @@ int receive(int *senderPID, unsigned long *msg) {
 				return -4;
 			}
 		}else{
-			kprintf("<R11>");
+			//kprintf("<R11>");
 			//put receiver on sender's receiver queue
 			senderProcess->msg = *msg;
 			//block receiver

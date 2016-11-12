@@ -9,20 +9,19 @@ void process1(void) {
 	/****************************/
 	int senderpid = 1; //need this to get the sender_pid
 	unsigned long msg = 0;
-	//kprintf("Process:%d alive\n", sysgetpid());
+	kprintf("Process:%d alive\n", sysgetpid());
 	syssleep(5000);
-	kprintf("(p1sleep1done)");
+	kprintf("p1sleep1done\n");
 	//receive from root process
 	sysrecv(&senderpid, &msg);
-	kprintf("(p1msg:%d)", msg);
+	kprintf("p1msg:%d\n", msg);
 	syssleep(msg);
 
 	sysrecv(&senderpid, &msg);
-	kprintf("(p1msg2:%d)", msg);
+
 	syssleep(msg);
-
-
-	kprintf("(Process:%d sleep2done, exit\n)", sysgetpid());
+	kprintf("p1msg2:%d\n", msg);
+	kprintf("Process:%d sleep2done, exit\n", sysgetpid());
 	sysstop();
 }
 
@@ -31,20 +30,20 @@ void process2(void) {
 
 	int senderpid = 1; //need this to get the sender_pid
 	unsigned long msg = 0;
-	//kprintf("Process:%d alive\n", sysgetpid());
+	kprintf("Process:%d alive\n", sysgetpid());
 	syssleep(5000);
-	kprintf("(p2sleep1done)");
+	kprintf("p2sleep1done\n");
 	//receive from root process
 
 	sysrecv(&senderpid, &msg);
-	kprintf("(p2msg:%d)", msg);
+	kprintf("p2msg:%d\n", msg);
 	syssleep(msg);
 
 	sysrecv(&senderpid, &msg);
-	kprintf("(p2msg2:%d)", msg);
+	kprintf("p2msg2:%d\n", msg);
 	//syssleep(msg);
 
-	kprintf("(Process:%d sleep2done, exit\n)", sysgetpid());
+	kprintf("Process:%d sleep2done, exit\n", sysgetpid());
 	sysstop();
 }
 
@@ -53,16 +52,16 @@ void process3(void) {
 
 	int senderpid = 1; //need this to get the sender_pid
 	unsigned long msg = 0;
-//	kprintf("Process:%d alive\n", sysgetpid());
+	kprintf("Process:%d alive\n", sysgetpid());
 	syssleep(5000);
-	kprintf("p3sleep1 done ");
+	kprintf("p3sleep1 done\n");
 	//receive from root process
 	sysrecv(&senderpid, &msg);
-	kprintf("p3msg:%d ", msg);
+	kprintf("p3msg:%d\n", msg);
 	syssleep(msg);
 
 	sysrecv(&senderpid, &msg);
-	kprintf("3msg2:%d ", msg);
+	kprintf("3msg2:%d\n", msg);
 	syssleep(msg);
 
 	kprintf("Process:%d sleep2done, exit\n", sysgetpid());
@@ -73,19 +72,19 @@ void process4(void) {
 	/****************************/
 	int senderpid = 1; //need this to get the sender_pid
 	unsigned long msg = 0;
-//	kprintf("Process:%d alive\n", sysgetpid());
+	kprintf("Process:%d alive\n", sysgetpid());
 	syssleep(5000);
-	kprintf("(p4sleep1done)");
+	kprintf("p4sleep1done\n");
 	//receive from root process
 	sysrecv(&senderpid, &msg);
-	kprintf("(p4msg:%d)", msg);
+	kprintf("p4msg:%d\n", msg);
 	syssleep(msg);
 
 	sysrecv(&senderpid, &msg);
-	kprintf("(p4msg2:%d)", msg);
+	kprintf("p4msg2:%d\n", msg);
 	syssleep(msg);
 
-	kprintf("(Process:%d sleep2done, exit\n)", sysgetpid());
+	kprintf("Process:%d sleep2done, exit\n", sysgetpid());
 	sysstop();
 }
 
